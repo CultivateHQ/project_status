@@ -12,7 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :project_status, ProjectStatus.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("POSTGRES_USER"),
+  password: System.get_env("POSTGRES_PASSWORD"),
   database: "project_status_test",
   size: 1 # Use a single connection for transactional tests
