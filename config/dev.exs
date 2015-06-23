@@ -29,7 +29,7 @@ config :logger, :console, format: "[$level] $message\n"
 # Configure your database
 config :project_status, ProjectStatus.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: System.get_env("POSTGRES_USER"),
-  password: System.get_env("POSTGRES_PASSWORD"),
+  # username: System.get_env("POSTGRES_USER"),
+  # password: System.get_env("POSTGRES_PASSWORD"),
   database: "project_status_dev",
   size: 10 # The amount of database connections in the pool

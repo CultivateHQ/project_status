@@ -4,6 +4,6 @@ defmodule ProjectStatus.PageController do
   plug :action
 
   def index(conn, _params) do
-    render conn, "index.html"
+    conn |> redirect(to: project_path(conn, :index))
   end
 end
