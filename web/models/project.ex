@@ -1,10 +1,11 @@
 defmodule ProjectStatus.Project do
   use ProjectStatus.Web, :model
+  alias ProjectStatus.EmailRecipient
 
   schema "projects" do
     field :name, :string
 
-    has_many :email_recipients, ProjectStatus.EmailRecipient
+    has_many :email_recipients, EmailRecipient
     timestamps
   end
 
@@ -20,5 +21,9 @@ defmodule ProjectStatus.Project do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def new_email_recipient(project, email_recipient_params) do
+    EmailRecipient.changeset(%EmailRecipient{}, email_recipient_params |> Map.put(:project_id, project.id))
   end
 end

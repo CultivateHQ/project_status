@@ -15,4 +15,13 @@ defmodule ProjectStatus.ProjectTest do
     changeset = Project.changeset(%Project{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "create email_recipient changeset" do
+   project = %Project{name: "My Project", id: 67}
+   email_recipient = project |> Project.new_email_recipient(%{name: "Petra", email: "petra@bluepeter.co.uk"})
+   assert email_recipient.changes.name == "Petra"
+   assert email_recipient.changes.email == "petra@bluepeter.co.uk"
+   assert email_recipient.changes.project_id == project.id
+   assert email_recipient.valid?
+  end
 end
