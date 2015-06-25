@@ -31,7 +31,7 @@ defmodule ProjectStatus.ProjectController do
   end
 
   def show(conn, %{"id" => id}) do
-    project = Repo.get(Project, id)
+    project = Repo.get(Project, id) |> Repo.preload [:email_recipients]
     render(conn, "show.html", project: project)
   end
 

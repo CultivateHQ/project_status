@@ -3,6 +3,6 @@ defmodule ProjectStatus.PageControllerTest do
 
   test "GET /" do
     conn = get conn(), "/"
-    assert html_response(conn, 200) =~ "Welcome to Phoenix!"
+    assert redirected_to(conn) == project_path(conn, :index)
   end
 end

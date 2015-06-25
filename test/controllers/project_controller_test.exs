@@ -32,9 +32,9 @@ defmodule ProjectStatus.ProjectControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    project = Repo.insert! %Project{}
+    project = Repo.insert! %Project{name: "My cool project"}
     conn = get conn, project_path(conn, :show, project)
-    assert html_response(conn, 200) =~ "Show project"
+    assert html_response(conn, 200) =~ "My cool project"
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do

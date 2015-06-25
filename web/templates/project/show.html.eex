@@ -1,12 +1,12 @@
-<h2>Show project</h2>
+<h2><%= @project.name %></h2>
 
+<h3>Recipients</h3>
 <ul>
-
+  <%= for email_recipient <- @project.email_recipients do %>
   <li>
-    <strong>Name:</strong>
-    <%= @project.name %>
+    <%= email_recipient.name %> &lt;<%= email_recipient.email %>>
   </li>
-
+  <% end %>
 </ul>
 
 <%= link "Back", to: project_path(@conn, :index) %>

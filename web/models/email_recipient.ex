@@ -1,14 +1,15 @@
-defmodule ProjectStatus.Project do
+defmodule ProjectStatus.EmailRecipient do
   use ProjectStatus.Web, :model
 
-  schema "projects" do
+  schema "email_recipients" do
     field :name, :string
+    field :email, :string
 
-    has_many :email_recipients, ProjectStatus.EmailRecipient
+    belongs_to :project, ProjectStatus.Project
     timestamps
   end
 
-  @required_fields ~w(name)
+  @required_fields ~w(project_id name email)
   @optional_fields ~w()
 
   @doc """
