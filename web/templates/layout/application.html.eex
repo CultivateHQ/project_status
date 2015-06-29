@@ -15,6 +15,7 @@
     <div class="container" role="main">
       <div class="header">
         <ul class="nav nav-pills pull-right">
+          <li><a href="/">Projects</a></li>
           <li><a href="http://www.phoenixframework.org/docs">Here's a link to Phoenix, just for fun</a></li>
         </ul>
       </div>

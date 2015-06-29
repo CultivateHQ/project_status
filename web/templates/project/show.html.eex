@@ -9,7 +9,7 @@
   <% end %>
 </ul>
 <p>
-  <form id="new_project_email_recipient" action="#">
+  <form id="new_project_email_recipient" Action="#">
   <input type="text" id="project_email_recipient_name">
   <input type="text" id="project_email_recipient_email">
   <input type="submit" value="Add recipient">
