@@ -23,7 +23,7 @@ defmodule ProjectStatus.Project do
     |> cast(params, @required_fields, @optional_fields)
   end
 
-  def new_email_recipient(project, email_recipient_params) do
+  def new_email_recipient(project, email_recipient_params \\ %{}) do
     EmailRecipient.changeset(%EmailRecipient{}, email_recipient_params |> Map.put(:project_id, project.id))
   end
 end

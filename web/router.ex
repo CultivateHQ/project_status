@@ -19,6 +19,11 @@ defmodule ProjectStatus.Router do
     resources "/projects", ProjectController
   end
 
+  socket "/ws", ProjectStatus do
+    channel "project_email_recipients:*", ProjectEmailRecipientChannel
+  end
+
+
   # Other scopes may use custom stacks.
   # scope "/api", ProjectStatus do
   #   pipe_through :api

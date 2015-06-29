@@ -20,8 +20,7 @@ defmodule ProjectStatus.ProjectController do
     changeset = Project.changeset(%Project{}, project_params)
 
     if changeset.valid? do
-      Repo.insert!(changeset)
-
+      Repo.insert!(changeset) 
       conn
       |> put_flash(:info, "Project created successfully.")
       |> redirect(to: project_path(conn, :index))
