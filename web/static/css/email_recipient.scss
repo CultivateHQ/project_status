@@ -1,0 +1,22 @@
+form#new_project_email_recipient{
+  fieldset {
+    .errors {
+      color: red;
+    }
+  }
+}
+
+
+form#new_project_email_recipient .submitting input, #recipient_list .submitting{
+    border: dashed 5px pink;
+}
+ 
+#email_recipients ul#recipient_list {
+   li {
+     .recipient {
+      width: 20em;
+      display: inline-block;
+     }
+     margin: 0.5em 0;
+   }
+}

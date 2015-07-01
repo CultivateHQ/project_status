@@ -1,19 +1,30 @@
 <h2><%= @project.name %></h2>
 
 <h3>Recipients</h3>
-<ul id="email_recipients">
-  <%= for email_recipient <- @project.email_recipients do %>
-  <li>
-    <%= email_recipient.name %> &lt;<%= email_recipient.email %>>
-  </li>
-  <% end %>
+<div id="email_recipients" data-project-id="<%= @project.id %>">
+  <ul id="recipient_list">
+    <%= for email_recipient <- @project.email_recipients do %>
+        <li id="email-recipient-<%= email_recipient.id%>">
+          <span class="recipient">
+            <%= email_recipient.name %> &lt;<%= email_recipient.email %>>
+          </span>
+          <a class="btn btn-danger btn-xs delete_recipient" data-email-recipient-id="<%= email_recipient.id %>">
+            Delete
+          </a>
+         </li>
+<% end %>
 </ul>
 <p>
-  <form id="new_project_email_recipient" Action="#">
-  <input type="text" id="project_email_recipient_name">
-  <input type="text" id="project_email_recipient_email">
-  <input type="submit" value="Add recipient">
+  <form id="new_project_email_recipient" action="#">
+    <fieldset class="recipient">
+      <input type="text" id="project_email_recipient_name">
+      <input type="text" id="project_email_recipient_email">
+      <ul class="errors">
+      </ul>
+    </fieldset>
+    <input type="submit" value="Add recipient">
   </form>
 </p>
+</div>
 
 <%= link "Back", to: project_path(@conn, :index) %>

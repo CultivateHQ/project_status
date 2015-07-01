@@ -1,9 +1,9 @@
 defmodule ProjectStatus.ProjectEmailRecipientChannel do
   use ProjectStatus.Web, :channel
 
-  def join("project_email_recipients:"<>_project_id, payload, socket) do
+  def join("project_email_recipients:"<>project_id, payload, socket) do
     if authorized?(payload) do
-      {:ok, socket}
+      {:ok, assign(socket, :project_id, project_id)}
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -13,6 +13,22 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
   # by sending replies to requests from the client
   def handle_in("ping", payload, socket) do
     {:reply, {:ok, payload}, socket}
+  end
+
+  def handle_in("new_project_email_recipient", email_recipient_params = %{"email" => email, "name" => name}, socket) do
+    IO.puts ["new_project_email_recipient", {email, name, socket.assigns[:project_id]}] |> inspect
+    changeset = ProjectStatus.Project.new_email_recipient(socket.assigns[:project_id], email_recipient_params)
+    if changeset.valid? do
+      email_recipient = Repo.insert!(changeset)
+      {:reply, {:ok, %{email_recipient: email_recipient}}, socket}
+    else
+      {:reply, {:error, %{changeset: changeset}}, socket}
+    end
+  end
+
+  def handle_in("delete_project_email_recipient", %{"id" => id}, socket) do
+    Repo.get(ProjectStatus.EmailRecipient, id) |> Repo.delete!
+    {:reply, {:ok, %{id: id}}, socket}
   end
 
   # It is also common to receive messages from the client and
