@@ -55,15 +55,23 @@ function showErrors(errors){
     clearErrors()
     errors.forEach(error => {
         errorContainer().append(`<li>${error}</li>`)
-    }) 
+    })
+    formFieldSetContainer().addClass("errored")
 }
 
 function clearErrors(){
     errorContainer().html("")
+    formFieldSetContainer().removeClass("errored")
 }
 
 function indicateFailure(changeset){
-    console.log(changeset)
+    console.log("failed", changeset)
+    let errors = []
+    for (var key in changeset) {
+        errors.push(`${key} ${changeset[key]}`)
+    }
+    console.log(errors)
+    showErrors(errors)
 }
 
 function indicateTimeout(){

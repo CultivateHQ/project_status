@@ -10,6 +10,10 @@ form#new_project_email_recipient{
 form#new_project_email_recipient .submitting input, #recipient_list .submitting{
     border: dashed 5px pink;
 }
+
+fieldset.errored{
+    border: solid 2px red;
+}
  
 #email_recipients ul#recipient_list {
    li {

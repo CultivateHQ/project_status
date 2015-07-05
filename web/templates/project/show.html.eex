@@ -19,9 +19,9 @@
     <fieldset class="recipient">
       <input type="text" id="project_email_recipient_name">
       <input type="text" id="project_email_recipient_email">
+    </fieldset>
       <ul class="errors">
       </ul>
-    </fieldset>
     <input type="submit" value="Add recipient">
   </form>
 </p>
