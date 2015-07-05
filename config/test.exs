@@ -12,6 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :project_status, ProjectStatus.Repo,
   adapter: Ecto.Adapters.Postgres,
+  pool: Ecto.Adapters.SQL.Sandbox,
   # username: System.get_env("POSTGRES_USER"),
   # password: System.get_env("POSTGRES_PASSWORD"),
   database: "project_status_test",
