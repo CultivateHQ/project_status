@@ -19,13 +19,18 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
   def handle_in("new_project_email_recipient", email_recipient_params = %{"email" => email, "name" => name}, socket) do
     IO.puts ["new_project_email_recipient", {email, name, socket.assigns[:project_id]}] |> inspect
     case ProjectEmailing.add_recipient_to_project(socket.assigns[:project_id], email_recipient_params) do
-      {:ok, email_recipient} -> {:reply, {:ok, %{email_recipient: email_recipient},}, socket}
-      {:error, changeset} -> {:reply, {:error, %{changeset: changeset}}, socket}
+      {:ok, email_recipient} ->
+        broadcast socket, "new_project_email_recipient", %{email_recipient: email_recipient}
+        {:reply, {:ok, %{email_recipient: email_recipient},}, socket}
+
+      {:error, changeset} ->
+        {:reply, {:error, %{changeset: changeset}}, socket}
     end
   end
 
   def handle_in("delete_project_email_recipient", %{"id" => id}, socket) do
     :ok = ProjectEmailing.delete_email_recipient id
+    broadcast socket, "delete_project_email_recipient", %{id: id}
     {:reply, {:ok, %{id: id}}, socket}
   end
 

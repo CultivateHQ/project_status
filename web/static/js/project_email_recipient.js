@@ -5,15 +5,23 @@ let projectId = null,
 
 function createChannel(){
     chan = socket.chan(`project_email_recipients:${projectId}`, {})
-    chan.join().receive("ok", chan => {
-        console.log(`Joined channel with ${projectId}`)
+    chan.join().receive("ok", chan => {console.log(`Joined channel with ${projectId}`)})
+    chan.on("new_project_email_recipient", payload => {
+        addRecipientToDisplay(payload.email_recipient)
     })
+    chan.on("delete_project_email_recipient", payload => {
+        deleteRecipient(payload.id)
+    })
+
 }
 
 function recipientsContainer(){
     return $('ul#recipient_list')
 }
 
+function deleteRecipient(recipientId) {
+    $(`#email-recipient-${recipientId}`).remove() 
+}
 function addRecipientToDisplay(emailRecipient){
     recipientsContainer().append(`<li id='email-recipient-${emailRecipient.id}'>` +
                                  '<span class="recipient">' +
@@ -71,10 +79,10 @@ function submitNewEmailRecipient(name, email){
     indicateSubmissionStarted()
     chan.push("new_project_email_recipient", {name: name, email: email})
         .receive("ok", payload => {
-            addRecipientToDisplay(payload.email_recipient)
             indicateSubmissionFinished()
             clearForm()
             clearErrors()
+            // recipient added from channel broadcast
         })
         .receive("error", payload => {
             indicateSubmissionFinished()
@@ -88,7 +96,7 @@ function submitNewEmailRecipient(name, email){
 function submitDeleteRecipient(emailRecipientId){
     chan.push("delete_project_email_recipient", {id: emailRecipientId})
         .receive("ok", payload => {
-            $(`#email-recipient-${payload.id}`).remove() 
+            // Delete from broadcast
         }).
         after(2000, () => {
             $('a.delete_recipient.submitting').removeClass("submitting")
