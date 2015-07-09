@@ -80,4 +80,15 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
       assert_broadcast  "delete_project_email_recipient", %{id: "790"}
     end
   end
+
+  test "project recipients", %{socket: socket} do
+    recipients = [%EmailRecipient{name: "bob"}, %EmailRecipient{name: "mavis"}]
+    with_mock ProjectEmailing, [project_recipients: fn(project_id) ->
+                               assert project_id == "123"
+                               recipients
+                               end] do
+      ref = push socket, "project_email_recipients"
+      assert_reply ref, :ok, %{project_email_recipients: recipients}
+    end
+  end
 end

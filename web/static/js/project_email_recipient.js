@@ -5,7 +5,10 @@ let projectId = null,
 
 function createChannel(){
     chan = socket.chan(`project_email_recipients:${projectId}`, {})
-    chan.join().receive("ok", chan => {console.log(`Joined channel with ${projectId}`)})
+    chan.join().receive("ok", chan => {
+        console.log(`Joined channel with ${projectId}`)
+        loadProjectEmailRecipients()
+    })
     chan.on("new_project_email_recipient", payload => {
         addRecipientToDisplay(payload.email_recipient)
     })
@@ -62,15 +65,14 @@ function showErrors(errors){
 function clearErrors(){
     errorContainer().html("")
     formFieldSetContainer().removeClass("errored")
+    formFieldSetContainer().find("input:first").focus()
 }
 
 function indicateFailure(changeset){
-    console.log("failed", changeset)
     let errors = []
     for (var key in changeset) {
         errors.push(`${key} ${changeset[key]}`)
     }
-    console.log(errors)
     showErrors(errors)
 }
 
@@ -127,6 +129,16 @@ function bindDeleteButtons(buttons = $("#recipient_list a.delete_recipient")){
         targetButton.addClass("submitting")
         submitDeleteRecipient($(event.target).data().emailRecipientId)
     })
+}
+
+function loadProjectEmailRecipients(){
+    chan.push("project_email_recipients").
+        receive("ok", payload => {
+            payload.project_email_recipients.forEach(recipient => {
+                addRecipientToDisplay(recipient)
+            })
+        }).
+        after(2000, () => {alert("Can't load email recipients")})
 }
 
 export function initProjectEmailRecipient(socket_) {

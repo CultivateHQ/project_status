@@ -16,12 +16,6 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
     end
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
-  end
-
   def handle_in("new_project_email_recipient", email_recipient_params = %{"email" => _, "name" => _}, socket) do
     case ProjectEmailing.add_recipient_to_project(socket.assigns[:project_id], email_recipient_params |> scrub) do
       {:ok, email_recipient} ->
@@ -37,6 +31,11 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
     :ok = ProjectEmailing.delete_email_recipient id
     broadcast socket, "delete_project_email_recipient", %{id: id}
     {:reply, {:ok, %{id: id}}, socket}
+  end
+
+  def handle_in("project_email_recipients", _, socket) do
+    recipients = ProjectEmailing.project_recipients socket.assigns[:project_id]
+    {:reply, {:ok, %{project_email_recipients: recipients}}, socket}
   end
 
   # Add authorization logic here as required.

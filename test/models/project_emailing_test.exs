@@ -26,6 +26,14 @@ defmodule ProjectStatus.ProjectEmailingTest do
     assert Repo.all(EmailRecipient) |> length == 0
   end
 
+  test "project recipients" do
+    {project1, project2} = {create_project, create_project}
+    {:ok, recipient} = ProjectEmailing.add_recipient_to_project project1, %{"name" => "bob", "email" => "bob@bob.com"}
+
+    assert project1 |> ProjectEmailing.project_recipients == [recipient]
+    assert project2 |> ProjectEmailing.project_recipients == []
+  end
+
 
   defp create_project do
     Repo.insert! %Project{}

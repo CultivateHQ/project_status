@@ -3,6 +3,8 @@ defmodule ProjectStatus.ProjectEmailing do
   alias ProjectStatus.EmailRecipient
   alias ProjectStatus.Repo
 
+  import Ecto.Query
+
   def add_recipient_to_project(%Project{id: project_id}, params) do
     add_recipient_to_project project_id, params
   end
@@ -18,6 +20,15 @@ defmodule ProjectStatus.ProjectEmailing do
   def delete_email_recipient id do
     Repo.get(EmailRecipient, id) |> Repo.delete!
     :ok
+  end
+
+  def project_recipients(%Project{id: project_id}) do
+    project_recipients project_id
+  end
+
+  def project_recipients project_id do
+    (from r in EmailRecipient, where: r.project_id == ^project_id)
+      |> Repo.all
   end
 
   defp add_recipient(params) do

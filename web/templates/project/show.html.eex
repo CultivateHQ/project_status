@@ -2,18 +2,7 @@
 
 <h3>Recipients</h3>
 <div id="email_recipients" data-project-id="<%= @project.id %>">
-  <ul id="recipient_list">
-    <%= for email_recipient <- @project.email_recipients do %>
-        <li id="email-recipient-<%= email_recipient.id%>">
-          <span class="recipient">
-            <%= email_recipient.name %> &lt;<%= email_recipient.email %>>
-          </span>
-          <a class="btn btn-danger btn-xs delete_recipient" data-email-recipient-id="<%= email_recipient.id %>">
-            Delete
-          </a>
-         </li>
-<% end %>
-</ul>
+  <ul id="recipient_list"></ul>
 <p>
   <form id="new_project_email_recipient" action="#">
     <fieldset class="recipient">
