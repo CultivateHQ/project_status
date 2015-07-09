@@ -24,12 +24,12 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
     end
   end
 
-  test "new_project_email_recipient broadcasts the new reciient", %{socket: socket} do
+  test "new_project_email_recipient broadcasts the new recipient", %{socket: socket} do
     recipient = %EmailRecipient{name: "bob"}
     with_mock ProjectEmailing,
     [add_recipient_to_project: fn(_, _) -> {:ok, recipient} end] do
 
-      ref = push socket, "new_project_email_recipient", %{"email" => "", "name" => ""}
+      push socket, "new_project_email_recipient", %{"email" => "", "name" => ""}
       assert_broadcast "new_project_email_recipient", %{email_recipient: recipient}
     end
   end
@@ -61,6 +61,23 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
                                  end] do
       ref = push socket, "new_project_email_recipient", %{"name" => "", "email" => ""}
       assert_reply ref, :ok, %{email_recipient: %{}} #without assert message is not pushed
+    end
+  end
+
+  test "recipient deleted", %{socket: socket} do
+    with_mock ProjectEmailing, [delete_email_recipient: fn(id) ->
+                                 assert id == "456"
+                                 :ok
+                               end] do
+      ref = push socket, "delete_project_email_recipient", %{"id" => "456"}
+      assert_reply ref, :ok, %{id: "456"}
+    end
+  end
+
+  test "deleted recipient broadcast", %{socket: socket} do
+    with_mock ProjectEmailing, [delete_email_recipient: fn(_) -> :ok end] do
+      push socket, "delete_project_email_recipient", %{"id" => "790"}
+      assert_broadcast  "delete_project_email_recipient", %{id: "790"}
     end
   end
 end
