@@ -23,7 +23,7 @@ function recipientsContainer(){
 }
 
 function deleteRecipient(recipientId) {
-    $(`#email-recipient-${recipientId}`).remove() 
+    $(`#email-recipient-${recipientId}`).remove()
 }
 function addRecipientToDisplay(emailRecipient){
     recipientsContainer().append(`<li id='email-recipient-${emailRecipient.id}'>` +
