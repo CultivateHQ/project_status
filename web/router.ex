@@ -21,6 +21,7 @@ defmodule ProjectStatus.Router do
 
   socket "/ws", ProjectStatus do
     channel "project_email_recipients:*", ProjectEmailRecipientChannel
+    channel "project_status_emails:*", ProjectStatusEmailChannel
   end
 
 

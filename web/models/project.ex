@@ -1,11 +1,13 @@
 defmodule ProjectStatus.Project do
   use ProjectStatus.Web, :model
   alias ProjectStatus.EmailRecipient
+  alias ProjectStatus.StatusEmail
 
   schema "projects" do
     field :name, :string
 
     has_many :email_recipients, EmailRecipient
+    has_many :status_emails, StatusEmail
     timestamps
   end
 

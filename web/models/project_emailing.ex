@@ -1,6 +1,7 @@
 defmodule ProjectStatus.ProjectEmailing do
   alias ProjectStatus.Project
   alias ProjectStatus.EmailRecipient
+  alias ProjectStatus.StatusEmail
   alias ProjectStatus.Repo
 
   import Ecto.Query
@@ -38,6 +39,38 @@ defmodule ProjectStatus.ProjectEmailing do
     else
       {:error, changeset}
     end
+  end
+
+  def create_status_email(%Project{id: project_id}, params) do
+    create_status_email(project_id, params)
+  end
+
+  def create_status_email(project_id, params = %{"status_date" => status_date}) do
+    subject = "Status update - #{project_name(project_id)} - #{format_date(status_date)}"
+    changeset = StatusEmail.changeset(%StatusEmail{}, params
+                                      |> Map.merge(%{ "project_id" => project_id,
+                                                      "subject" => subject}))
+   if changeset.valid? do
+     {:ok, changeset |> Repo.insert!}
+   else
+     {:error, changeset}
+   end
+  end
+
+  def project_status_emails(%Project{id: project_id}) do
+    project_status_emails project_id
+  end
+
+  def project_status_emails(project_id) do
+    (from e in StatusEmail, where: e.project_id == ^project_id, order_by: [asc: e.status_date]) |> Repo.all
+  end
+
+  defp project_name(project_id) do
+    (from p in Project, where: p.id == ^project_id, select: p.name) |> Repo.one
+  end
+
+  defp format_date(%{year: year, month: month, day: day}) do
+    Chronos.Formatter.strftime({year, month, day}, "%Y-%0m-%0d")
   end
 end
 

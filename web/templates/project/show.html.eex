@@ -1,18 +1,38 @@
+<div id="project" data-project-id="<%= @project.id %>">
 <h2><%= @project.name %></h2>
 
+<h3>New status email</h3>
+<form id="new_status_email">
+  <ul class="errors"></ul>
+  <fieldset>
+    <label for="new_status_email_status_date">Status date:</label>
+    <select id="new_status_email_status_date">
+      <%= for {{year,month,day}, formatted_date, selected} <- ProjectStatus.StatusEmailDates.dates do %>
+         <option value="<%= "#{year}-#{month}-#{day}" %>" <%= selected %>><%= formatted_date %></option>
+      <% end %>
+    </select>
+  </fieldset>
+  <fieldset>
+    <textarea id="new_status_email_content"></textarea>
+  </fieldset>
+  <input type="submit" value="Send">
+</form>
 <h3>Recipients</h3>
-<div id="email_recipients" data-project-id="<%= @project.id %>">
+<div id="email_recipients">
   <ul id="recipient_list"></ul>
-<p>
-  <form id="new_project_email_recipient" action="#">
-    <fieldset class="recipient">
-      <input type="text" id="project_email_recipient_name">
-      <input type="text" id="project_email_recipient_email">
-    </fieldset>
-    <input type="submit" value="Add recipient">
-    <ul class="errors"></ul>
-  </form>
-</p>
+  <p>
+    <form id="new_project_email_recipient" action="#">
+      <fieldset class="recipient">
+        <input type="text" id="project_email_recipient_name">
+        <input type="text" id="project_email_recipient_email">
+      </fieldset>
+      <input type="submit" value="Add recipient">
+      <ul class="errors"></ul>
+    </form>
+  </p>
 </div>
+<h3>Sent</h3>
+<ul id="sent_status_emails"></ul>
 
 <%= link "Back", to: project_path(@conn, :index) %>
+</div>

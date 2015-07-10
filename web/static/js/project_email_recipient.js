@@ -15,7 +15,6 @@ function createChannel(){
     chan.on("delete_project_email_recipient", payload => {
         deleteRecipient(payload.id)
     })
-
 }
 
 function recipientsContainer(){
@@ -143,10 +142,8 @@ function loadProjectEmailRecipients(){
 
 export function initProjectEmailRecipient(socket_) {
     if ($('#new_project_email_recipient').length == 0) return
-
     socket = socket_
-    projectId= $('#email_recipients').data().projectId
+    projectId= $('#project').data().projectId
     createChannel()
     bindNewEmailRecipientSubmit()
-    bindDeleteButtons()
 }

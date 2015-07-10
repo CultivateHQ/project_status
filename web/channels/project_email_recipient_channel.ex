@@ -38,6 +38,7 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
     {:reply, {:ok, %{project_email_recipients: recipients}}, socket}
   end
 
+
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true
