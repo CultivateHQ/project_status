@@ -1,3 +1,4 @@
+import {flashUpMessage} from "web/static/js/flashup"
 let projectId = null,
     socket = null,
     chan = null
@@ -16,6 +17,7 @@ function showErrors(errors){
 
 function clearErrors(){
     errorContainer().html("")
+    formFieldSetContainer().removeClass("errored")
 }
 
 function indicateFailure(changeset){
@@ -53,7 +55,7 @@ function loadStatusEmails(){
                 addStatusEmailToDisplay(email)
             })
         }).
-        after(2000, () => {alert("Can't load email recipients")})
+        after(2000, () => {flashUpMessage("Can't load email recipients")})
 }
 
 function addStatusEmailToDisplay(email) {
@@ -101,6 +103,7 @@ function sendNewEmail(statusDate, content){
             indicateSubmissionFinished()
             clearForm()
             clearErrors()
+            flashUpMessage("Email has been created")
         })
         .receive("error", payload => {
             indicateSubmissionFinished()

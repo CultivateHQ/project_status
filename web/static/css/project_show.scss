@@ -8,25 +8,27 @@ form#new_status_email{
   }
 }
 
-form#new_project_email_recipient{
+form#new_project_email_recipient, form#new_status_email{
     .errors {
       color: red;
     }
-  fieldset {
+  fieldset{
+    &.errored{
+      border: solid 2px red;
+    }
   }
-}
-
-
-form#new_project_email_recipient .submitting input, #recipient_list .submitting{
+  .submitting input, #recipient_list .submitting {
     border: dashed 5px pink;
-}
-
-fieldset{
-  width: 24em;
-  &.errored{
-    border: solid 2px red;
   }
 }
+
+
+form#new_project_email_recipient {
+  fieldset {
+    width: 24em;
+  }
+}
+
  
 #email_recipients ul#recipient_list {
    li {

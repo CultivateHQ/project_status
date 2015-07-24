@@ -19,6 +19,7 @@
           <li><a href="http://www.phoenixframework.org/docs">Here's a link to Phoenix, just for fun</a></li>
         </ul>
       </div>
+      <p id="flashed">&nbsp;</p>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
