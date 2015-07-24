@@ -37,7 +37,6 @@ function clearForm(){
 }
 
 function createChannel(){
-    console.log("create channel" , Math.random())
     chan = socket.chan(`project_status_emails:${projectId}`)
     chan.join().receive("ok", chan => {
         console.log(`Joined status email channel ${projectId}`)
@@ -59,7 +58,6 @@ function loadStatusEmails(){
 }
 
 function addStatusEmailToDisplay(email) {
-    console.log("email", email)
     $('#sent_status_emails').prepend(
         "<li>" +
             `<a href="/projects/${projectId}/status_emails/${email.id}">` +
@@ -86,10 +84,8 @@ function indicateSubmissionFinished(){
 
 function bindSendStatusEmail(){
     $('#new_status_email').submit(e => {
-        console.log("a1")
         let statusDate = $('#new_status_email_status_date').val()
         let content = $('#new_status_email_content').val().trim()
-        console.log("a2", statusDate, content)
         sendNewEmail(statusDate, content)
         e.preventDefault();
     })

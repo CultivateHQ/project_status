@@ -52,6 +52,22 @@ defmodule ProjectStatus.ProjectEmailingTest do
     assert [] = project2 |> ProjectEmailing.project_status_emails
   end
 
+  test "getting a single status email for a project" do
+    project = create_project
+    {:ok, status_email} = project |>
+      ProjectEmailing.create_status_email %{"status_date" => %{year: 2015, month: 2, day: 11}, "content" => "Stuff"}
+
+    assert {:ok, status_email} == ProjectEmailing.project_status_email(project, status_email.id)
+  end
+
+  test "Can't get a status email for the wrong project" do
+    {project1, project2} = {create_project, create_project}
+    {:ok, status_email} = project1 |>
+      ProjectEmailing.create_status_email %{"status_date" => %{year: 2015, month: 2, day: 11}, "content" => "Stuff"}
+
+    assert :not_found == ProjectEmailing.project_status_email(project2, status_email.id)
+  end
+
   defp create_project(name \\ "A project") do
     Repo.insert! %Project{name: name}
   end

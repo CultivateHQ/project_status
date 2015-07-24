@@ -16,7 +16,9 @@ defmodule ProjectStatus.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/projects", ProjectController
+    resources "/projects", ProjectController do
+      resources "/status_emails", StatusEmailController, only: [:show]
+    end
   end
 
   socket "/ws", ProjectStatus do

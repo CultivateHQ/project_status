@@ -65,6 +65,17 @@ defmodule ProjectStatus.ProjectEmailing do
     (from e in StatusEmail, where: e.project_id == ^project_id, order_by: [asc: e.status_date]) |> Repo.all
   end
 
+  def project_status_email(%Project{id: project_id}, id) do
+    project_status_email project_id, id
+  end
+
+  def project_status_email(project_id, id) do
+    case (from e in StatusEmail, where: e.id == ^id and e.project_id == ^project_id) |> Repo.one do
+      nil -> :not_found
+      email -> {:ok, email}
+    end
+  end
+
   defp project_name(project_id) do
     (from p in Project, where: p.id == ^project_id, select: p.name) |> Repo.one
   end
