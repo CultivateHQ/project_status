@@ -1,6 +1,8 @@
 defmodule ProjectStatus.Endpoint do
   use Phoenix.Endpoint, otp_app: :project_status
 
+  socket "/ws", ProjectStatus.UserSocket
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
@@ -12,6 +14,8 @@ defmodule ProjectStatus.Endpoint do
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
+    IO.puts "reloading!!!!"
+    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
   end
@@ -31,5 +35,5 @@ defmodule ProjectStatus.Endpoint do
     key: "_project_status_key",
     signing_salt: "wgiTAhe0"
 
-  plug :router, ProjectStatus.Router
+  plug ProjectStatus.Router
 end

@@ -109,6 +109,7 @@ function sendNewEmail(statusDate, content){
             indicateTimeout()
         })
 }
+
 export function initProjectEmailStatus(socket_){
     if($('form#new_status_email').length == 0) return
 

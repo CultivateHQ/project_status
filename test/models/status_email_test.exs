@@ -15,4 +15,9 @@ defmodule ProjectStatus.StatusEmailTest do
     changeset = StatusEmail.changeset(%StatusEmail{}, @invalid_attrs)
     refute changeset.valid?
   end
+
+  test "Poison encoding" do
+    model = %ProjectStatus.StatusEmail{id: 28}
+    {:ok, _} = model |> Poison.encode([])
+  end
 end

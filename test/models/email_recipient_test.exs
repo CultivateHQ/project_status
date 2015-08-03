@@ -1,6 +1,5 @@
 defmodule ProjectStatus.EmailRecipientTest do
   use ProjectStatus.ModelCase
-
   alias ProjectStatus.EmailRecipient
 
   @valid_attrs %{email: "bob@bob.com", name: "name", project_id: 42}
@@ -19,5 +18,11 @@ defmodule ProjectStatus.EmailRecipientTest do
   test "email validation" do
     changeset = EmailRecipient.changeset(%EmailRecipient{}, %{@valid_attrs | email: "blah"})
     refute changeset.valid?
+  end
+
+
+  test "Poison encoding" do
+    model = %EmailRecipient{name: "Bob", email: "bob@bob.com", id: 25}
+    assert {:ok, _} = model |> Poison.encode([])
   end
 end

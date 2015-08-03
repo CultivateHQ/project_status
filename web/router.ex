@@ -21,10 +21,10 @@ defmodule ProjectStatus.Router do
     end
   end
 
-  socket "/ws", ProjectStatus do
-    channel "project_email_recipients:*", ProjectEmailRecipientChannel
-    channel "project_status_emails:*", ProjectStatusEmailChannel
-  end
+  # socket "/ws", ProjectStatus do
+  #   channel "project_email_recipients:*", ProjectEmailRecipientChannel
+  #   channel "project_status_emails:*", ProjectStatusEmailChannel
+  # end
 
 
   # Other scopes may use custom stacks.

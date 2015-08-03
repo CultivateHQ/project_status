@@ -47,7 +47,7 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
     with_mock ProjectEmailing, [add_recipient_to_project: fn(project_id, params) ->
                                  assert project_id == "123"
                                  assert params == %{"name" => "bob", "email" => "bob@bob.com"}
-                                 {:ok, %{}}
+                                 {:ok, %EmailRecipient{}}
                                end] do
       ref = push socket, "new_project_email_recipient", %{"name" => "bob", "email" => "bob@bob.com"}
       assert_reply ref, :ok, %{email_recipient: %{}} #without assert message is not pushed
@@ -57,7 +57,7 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
   test "new_project_email_recipient params are scrubbed", %{socket: socket} do
     with_mock ProjectEmailing, [add_recipient_to_project: fn(_, params) ->
                                    assert params == %{"name" => nil, "email" => nil}
-                                   {:ok, %{}}
+                                   {:ok, %EmailRecipient{}}
                                  end] do
       ref = push socket, "new_project_email_recipient", %{"name" => "", "email" => ""}
       assert_reply ref, :ok, %{email_recipient: %{}} #without assert message is not pushed

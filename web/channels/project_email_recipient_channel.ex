@@ -20,7 +20,7 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
     case ProjectEmailing.add_recipient_to_project(socket.assigns[:project_id], email_recipient_params |> scrub) do
       {:ok, email_recipient} ->
         broadcast socket, "new_project_email_recipient", %{email_recipient: email_recipient}
-        {:reply, {:ok, %{email_recipient: email_recipient},}, socket}
+        {:reply, {:ok, %{email_recipient: email_recipient}}, socket}
 
       {:error, changeset} ->
         {:reply, {:error, %{changeset: changeset}}, socket}
@@ -34,10 +34,9 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
   end
 
   def handle_in("project_email_recipients", _, socket) do
-    recipients = ProjectEmailing.project_recipients socket.assigns[:project_id]
+    recipients = ProjectEmailing.project_recipients(socket.assigns[:project_id])
     {:reply, {:ok, %{project_email_recipients: recipients}}, socket}
   end
-
 
   # Add authorization logic here as required.
   defp authorized?(_payload) do

@@ -5,7 +5,7 @@ defmodule ProjectStatus.ProjectEmailingTest do
   alias ProjectStatus.EmailRecipient
 
 
-  test "sucessfully adding recipients to a project" do
+  test "successfully adding recipients to a project" do
     project = create_project
     assert {:ok, recipient} = project
       |> ProjectEmailing.add_recipient_to_project(%{"name" => "bob", "email" => "bob@bob.com"})
