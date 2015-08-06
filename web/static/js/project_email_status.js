@@ -67,8 +67,6 @@ function addStatusEmailToDisplay(email) {
     )
 }
 
-
-
 function formFieldSetContainer(){
     return $('#new_status_email fieldset')
 }
