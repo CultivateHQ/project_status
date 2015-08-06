@@ -6,6 +6,6 @@ defmodule ProjectStatus.Mailing do
 
 
   def send(recipients, subject, content) do
-    send_email to: recipients, from: @from, subject: subject, text: content
+    send_email to: recipients, from: @from, subject: subject, text: content, html: Earmark.to_html(content)
   end
 end

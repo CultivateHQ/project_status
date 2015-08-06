@@ -1,5 +1,5 @@
 <div>
   <p><%= @status_email.subject %></p>
-  <p><%= @status_email.content %></p>
+  <p><%= {:safe, @status_email.content |> Earmark.to_html} %></p>
 <%= link "Back", to: project_path(@conn, :show, @project_id) %>
 </div>

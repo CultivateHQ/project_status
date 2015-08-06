@@ -29,7 +29,7 @@ defmodule ProjectStatus.Mixfile do
   #
   # Type `mix help deps` for examples and options
   defp deps do
-    [{:phoenix, "~> 0.16.0"},
+    [{:phoenix, "~> 0.16.1"},
      {:phoenix_ecto, "~> 0.8"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 1.4"},
@@ -37,6 +37,7 @@ defmodule ProjectStatus.Mixfile do
      {:cowboy, "~> 1.0"},
      {:chronos, "~> 1.4.0"},
      {:mailgun, "~> 0.1.1"},
+     {:earmark, "~> 0.1.17"},
      {:mock, ">= 0.0.0"}]
   end
 end
