@@ -37,7 +37,7 @@ defmodule ProjectStatus.Mixfile do
      {:dotenv, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:chronos, "~> 1.4.0"},
-     {:mandrill, "~> 0.4.1"},
+     {:mailgun, "~> 0.1.1"},
      {:mock, ">= 0.0.0"}]
   end
 end
