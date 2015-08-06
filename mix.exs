@@ -17,7 +17,7 @@ defmodule ProjectStatus.Mixfile do
   # Type `mix help compile.app` for more information
   def application do
     [mod: {ProjectStatus, []},
-     applications: [:dotenv, :phoenix, :phoenix_html, :cowboy, :logger,
+     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex]]
   end
 
@@ -34,7 +34,6 @@ defmodule ProjectStatus.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 1.4"},
      {:phoenix_live_reload, "~> 0.5", only: :dev},
-     {:dotenv, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:chronos, "~> 1.4.0"},
      {:mailgun, "~> 0.1.1"},

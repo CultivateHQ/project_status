@@ -54,7 +54,7 @@ defmodule ProjectStatus.ProjectEmailingTest do
 
   test "email failed to send" do
     project = create_project_with_recipients {"bob", "bob@exmple.com"}
-    with_mock Mailing, [send: fn(_,_,_) -> {:error, {}} end] do
+    with_mock Mailing, [send: fn(_,_,_) -> {:error, :reason, {}} end] do
       {:error, {:email_failed, _}} = project |>
         ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 3, day: 9}, "content" => "Stuff happened"})
       assert 0 == (from e in StatusEmail, select: count(e.id)) |> Repo.one
