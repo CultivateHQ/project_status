@@ -4,7 +4,7 @@ let projectId = null,
     socket = null
 
 function createChannel(){
-    chan = socket.chan(`project_email_recipients:${projectId}`, {})
+    chan = socket.channel(`project_email_recipients:${projectId}`, {})
     chan.join().receive("ok", chan => {
         console.log(`Joined channel with ${projectId}`)
         loadProjectEmailRecipients()

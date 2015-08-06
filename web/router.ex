@@ -6,6 +6,7 @@ defmodule ProjectStatus.Router do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
+    plug :put_secure_browser_headers
   end
 
   pipeline :api do
@@ -20,12 +21,6 @@ defmodule ProjectStatus.Router do
       resources "/status_emails", StatusEmailController, only: [:show]
     end
   end
-
-  # socket "/ws", ProjectStatus do
-  #   channel "project_email_recipients:*", ProjectEmailRecipientChannel
-  #   channel "project_status_emails:*", ProjectStatusEmailChannel
-  # end
-
 
   # Other scopes may use custom stacks.
   # scope "/api", ProjectStatus do

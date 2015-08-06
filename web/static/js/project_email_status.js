@@ -37,7 +37,7 @@ function clearForm(){
 }
 
 function createChannel(){
-    chan = socket.chan(`project_status_emails:${projectId}`)
+    chan = socket.channel(`project_status_emails:${projectId}`)
     chan.join().receive("ok", chan => {
         console.log(`Joined status email channel ${projectId}`)
         loadStatusEmails()
@@ -62,7 +62,7 @@ function addStatusEmailToDisplay(email) {
         "<li>" +
             `<a href="/projects/${projectId}/status_emails/${email.id}">` +
             email.subject +
-            "</a>" + 
+            "</a>" +
          "</li>"
     )
 }
