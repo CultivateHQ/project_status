@@ -91,6 +91,9 @@ function bindSendStatusEmail(){
 
 function sendNewEmail(statusDate, content){
     clearErrors()
+    if(!confirm("Send email?")){
+        return;
+    }
     indicateSubmissionStarted()
     chan.push("send_status_email", {status_date: statusDate, content: content})
         .receive("ok", payload => {

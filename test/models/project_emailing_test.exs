@@ -3,6 +3,9 @@ defmodule ProjectStatus.ProjectEmailingTest do
   alias ProjectStatus.ProjectEmailing
   alias ProjectStatus.Project
   alias ProjectStatus.EmailRecipient
+  alias ProjectStatus.Mailing
+
+  import Mock
 
 
   test "successfully adding recipients to a project" do
@@ -35,40 +38,51 @@ defmodule ProjectStatus.ProjectEmailingTest do
   end
 
   test "creating a valid status email" do
-    project = create_project
-    assert {:ok, status_email} = project |>
-      ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 3, day: 9}, "content" => "Stuff happened"})
-    assert [status_email] = (project |> Repo.preload(:status_emails)).status_emails
-    assert status_email.status_date |> Ecto.Date.to_erl == {2015, 3, 9}
-    assert status_email.subject == "Status update - A project - 2015-03-09"
+    project = create_project_with_recipients([{"bob", "bob@example.com"}, {"sue", "sue@example.com"}])
+    with_mock Mailing, [send: fn(_,_,_ ) -> {:ok, {}} end] do
+      assert {:ok, status_email} = project |>
+        ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 3, day: 9}, "content" => "Stuff happened"})
+      assert [status_email] = (project |> Repo.preload(:status_emails)).status_emails
+      assert status_email.status_date |> Ecto.Date.to_erl == {2015, 3, 9}
+      assert status_email.subject == "Status update - A project - 2015-03-09"
+      assert status_email.content == "Stuff happened"
+      assert called Mailing.send "bob <bob@example.com>,sue <sue@example.com>", status_email.subject, status_email.content
+    end
   end
 
 
   test "getting status emails" do
     {project1, project2} = {create_project, create_project}
-    {:ok, status_email} = project1 |>
-      ProjectEmailing.create_status_email %{"status_date" => %{year: 2015, month: 2, day: 11}, "content" => "Stuff"}
+    status_email = project1 |> create_status_email
     assert [status_email] == project1 |> ProjectEmailing.project_status_emails
     assert [] = project2 |> ProjectEmailing.project_status_emails
   end
 
   test "getting a single status email for a project" do
     project = create_project
-    {:ok, status_email} = project |>
-      ProjectEmailing.create_status_email %{"status_date" => %{year: 2015, month: 2, day: 11}, "content" => "Stuff"}
-
+    status_email = project |> create_status_email
     assert {:ok, status_email} == ProjectEmailing.project_status_email(project, status_email.id)
   end
 
   test "Can't get a status email for the wrong project" do
     {project1, project2} = {create_project, create_project}
-    {:ok, status_email} = project1 |>
-      ProjectEmailing.create_status_email %{"status_date" => %{year: 2015, month: 2, day: 11}, "content" => "Stuff"}
+    status_email = project1 |> create_status_email
 
     assert :not_found == ProjectEmailing.project_status_email(project2, status_email.id)
   end
 
   defp create_project(name \\ "A project") do
     Repo.insert! %Project{name: name}
+  end
+
+  defp create_project_with_recipients recipients do
+    recipients |> Enum.reduce(create_project, fn({name, email}, project) ->
+      project |> ProjectEmailing.add_recipient_to_project(%{"name" => name, "email" => email})
+      project
+    end)
+  end
+
+  defp create_status_email(%Project{id: project_id})do
+    %ProjectStatus.StatusEmail{project_id: project_id} |> Repo.insert!
   end
 end

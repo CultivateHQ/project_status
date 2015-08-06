@@ -3,6 +3,7 @@ defmodule ProjectStatus.ProjectEmailing do
   alias ProjectStatus.EmailRecipient
   alias ProjectStatus.StatusEmail
   alias ProjectStatus.Repo
+  alias ProjectStatus.Mailing
 
   import Ecto.Query
 
@@ -47,14 +48,14 @@ defmodule ProjectStatus.ProjectEmailing do
 
   def create_status_email(project_id, params = %{"status_date" => status_date}) do
     subject = "Status update - #{project_name(project_id)} - #{format_date(status_date)}"
-    changeset = StatusEmail.changeset(%StatusEmail{}, params
-                                      |> Map.merge(%{ "project_id" => project_id,
-                                                      "subject" => subject}))
-   if changeset.valid? do
-     {:ok, changeset |> Repo.insert!}
-   else
-     {:error, changeset}
-   end
+    attributes = params |> Map.merge(%{"project_id" => project_id, "subject" => subject})
+    changeset = StatusEmail.changeset(%StatusEmail{}, attributes)
+    if changeset.valid? do
+      send_email(project_id, attributes)
+      {:ok, changeset |> Repo.insert!}
+    else
+      {:error, changeset}
+    end
   end
 
   def project_status_emails(%Project{id: project_id}) do
@@ -76,6 +77,17 @@ defmodule ProjectStatus.ProjectEmailing do
     end
   end
 
+  defp send_email(project_id, email_attributes) do
+    Mailing.send recipients_as_string(project_id), email_attributes["subject"], email_attributes["content"]
+  end
+
+  defp recipients_as_string(project_id) do
+    (from r in EmailRecipient, select: [r.name, r.email], where: r.project_id == ^project_id)
+    |> Repo.all
+    |> Enum.map(fn [name, email] -> "#{name} <#{email}>" end)
+    |> Enum.join(",")
+  end
+
   defp project_name(project_id) do
     (from p in Project, where: p.id == ^project_id, select: p.name) |> Repo.one
   end
@@ -84,4 +96,3 @@ defmodule ProjectStatus.ProjectEmailing do
     Chronos.Formatter.strftime({year, month, day}, "%Y-%0m-%0d")
   end
 end
-
