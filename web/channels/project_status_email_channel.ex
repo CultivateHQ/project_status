@@ -21,6 +21,8 @@ defmodule ProjectStatus.ProjectStatusEmailChannel do
       {:ok, status_email}  ->
         broadcast socket, "new_status_email", status_email
         {:reply, {:ok, %{status_email: status_email}}, socket}
+      {:error, {:email_failed, _}} ->
+        {:reply, {:email_failed, %{}}, socket}
       {:error, changeset} ->
         {:reply, {:error, %{changeset: changeset}}, socket}
     end

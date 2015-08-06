@@ -34,6 +34,13 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
     end
   end
 
+  test "new_status_email replies with :error if failed to send", %{socket: socket} do
+    with_mock ProjectEmailing, [create_status_email: fn(_,_) -> {:error, {:email_failed, {}}} end ] do
+      ref = push socket, "send_status_email", %{"status_date" => "2014-11-2", "content" => "content"}
+      assert_reply ref, :email_failed
+    end
+  end
+
   test "new_status_email replies with :error with changeset on failure", %{socket: socket} do
     changeset = {:dummy_changeset}
     with_mock ProjectEmailing, [create_status_email: fn(_,_) -> {:error, changeset} end ] do

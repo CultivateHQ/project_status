@@ -4,8 +4,10 @@ defmodule ProjectStatus.ProjectEmailingTest do
   alias ProjectStatus.Project
   alias ProjectStatus.EmailRecipient
   alias ProjectStatus.Mailing
+  alias ProjectStatus.StatusEmail
 
   import Mock
+  import Ecto.Query
 
 
   test "successfully adding recipients to a project" do
@@ -50,6 +52,24 @@ defmodule ProjectStatus.ProjectEmailingTest do
     end
   end
 
+  test "email failed to send" do
+    project = create_project_with_recipients {"bob", "bob@exmple.com"}
+    with_mock Mailing, [send: fn(_,_,_) -> {:error, {}} end] do
+      {:error, {:email_failed, _}} = project |>
+        ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 3, day: 9}, "content" => "Stuff happened"})
+      assert 0 == (from e in StatusEmail, select: count(e.id)) |> Repo.one
+    end
+  end
+
+  test "email fails validation" do
+    project = create_project_with_recipients {"bob", "bob@exmple.com"}
+    with_mock Mailing, [send: fn(_,_,_) -> flunk "Email should not send" end] do
+      {:error, changeset} = project |> ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 1, day: 9}})
+      assert 0 == (from e in StatusEmail, select: count(e.id)) |> Repo.one
+      assert %Ecto.Changeset{valid?: false} = changeset
+    end
+  end
+
 
   test "getting status emails" do
     {project1, project2} = {create_project, create_project}
@@ -73,6 +93,11 @@ defmodule ProjectStatus.ProjectEmailingTest do
 
   defp create_project(name \\ "A project") do
     Repo.insert! %Project{name: name}
+  end
+
+
+  defp create_project_with_recipients recipients = {_,_} do
+    create_project_with_recipients [recipients]
   end
 
   defp create_project_with_recipients recipients do

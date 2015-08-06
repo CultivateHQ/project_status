@@ -104,6 +104,10 @@ function sendNewEmail(statusDate, content){
             indicateSubmissionFinished()
             indicateFailure(payload.changeset)
         })
+        .receive("email_failed", payload => {
+            indicateSubmissionFinished()
+            showErrors(["Sorry, the email has failed to send. Try again?"])
+        })
         .after(2000, () => {
             indicateTimeout()
         })

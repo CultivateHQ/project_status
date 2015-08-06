@@ -51,8 +51,10 @@ defmodule ProjectStatus.ProjectEmailing do
     attributes = params |> Map.merge(%{"project_id" => project_id, "subject" => subject})
     changeset = StatusEmail.changeset(%StatusEmail{}, attributes)
     if changeset.valid? do
-      send_email(project_id, attributes)
-      {:ok, changeset |> Repo.insert!}
+      case send_email(project_id, attributes) do
+        {:ok, _} -> {:ok, changeset |> Repo.insert!}
+        {_, reason, other} -> {:error, {:email_failed, {reason, other}}}
+      end
     else
       {:error, changeset}
     end
