@@ -35,6 +35,5 @@
 </div>
 <h3>Sent</h3>
 <ul id="sent_status_emails"></ul>
-
 <%= link "Back", to: project_path(@conn, :index) %>
 </div>
