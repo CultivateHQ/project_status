@@ -113,6 +113,17 @@ function sendNewEmail(statusDate, content){
         })
 }
 
+function bindStatusEmailPreview(){
+    let content = $('#new_status_email_content')
+    let preview = $("#status_email_content_preview")
+    content.on("input", () => {
+        chan.push("preview_content", {markdown: content.val()})
+            .receive("ok", payload => {
+                preview.html(payload.html) 
+            })
+    })
+}
+
 export function initProjectEmailStatus(socket_){
     if($('form#new_status_email').length == 0) return
 
@@ -120,4 +131,5 @@ export function initProjectEmailStatus(socket_){
     projectId= $('#project').data().projectId
     createChannel()
     bindSendStatusEmail()
+    bindStatusEmailPreview()
 }
