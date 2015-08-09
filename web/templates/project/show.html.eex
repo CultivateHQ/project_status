@@ -17,6 +17,8 @@
   </fieldset>
   <input type="submit" value="Send">
 </form>
+<div id="status_email_content_preview">
+</div>
 <h3>Recipients</h3>
 <div id="email_recipients">
   <ul id="recipient_list"></ul>

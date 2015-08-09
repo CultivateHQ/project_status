@@ -33,6 +33,11 @@ defmodule ProjectStatus.ProjectStatusEmailChannel do
     {:reply, {:ok, %{status_emails: status_emails}}, socket}
   end
 
+  def handle_in("preview_content", %{"markdown" => markdown}, socket) do
+    html = markdown |> Earmark.to_html
+    {:reply, {:ok, %{html: html}}, socket}
+  end
+
   defp parse_date(year_month_day) do
     [year, month, day] = year_month_day
     |> String.split("-")
