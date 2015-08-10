@@ -33,8 +33,7 @@ defmodule ProjectStatus.ConnCase do
       @endpoint ProjectStatus.Endpoint
 
       def authorised_conn do
-        header_content = "Basic " <> Base.encode64("ARSE:arse")
-        conn() |> put_req_header("authorization", header_content)
+        conn() |> put_req_header("authorization", ProjectStatus.Credentials.encoded)
       end
     end
   end

@@ -1,18 +1,14 @@
 defmodule ProjectStatus.Router do
   use ProjectStatus.Web, :router
 
-
+  import ProjectStatus.Credentials, only: [username: 0, password: 0]
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug BasicAuth, realm: "Cultivate Project Status", username: "ARSE", password: "arse"
-  end
-
-  pipeline :api do
-    plug :accepts, ["json"]
+    plug BasicAuth, realm: "Cultivate Project Status", username: username, password: password
   end
 
   scope "/", ProjectStatus do
@@ -24,8 +20,4 @@ defmodule ProjectStatus.Router do
     end
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", ProjectStatus do
-  #   pipe_through :api
-  # end
 end
