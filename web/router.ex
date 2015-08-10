@@ -8,7 +8,7 @@ defmodule ProjectStatus.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug Blaguth, realm: "secret", credentials: {"ARSE", "arse"}
+    plug BasicAuth, realm: "Cultivate Project Status", username: "ARSE", password: "arse"
   end
 
   pipeline :api do

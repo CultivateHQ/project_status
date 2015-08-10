@@ -38,7 +38,7 @@ defmodule ProjectStatus.Mixfile do
      {:chronos, "~> 1.4.0"},
      {:mailgun, "~> 0.1.1"},
      {:earmark, "~> 0.1.17"},
-     {:blaguth, "> 1.1.0"},
+     {:basic_auth, ">= 0.0.1"},
      {:mock, ">= 0.0.0"}]
   end
 end
