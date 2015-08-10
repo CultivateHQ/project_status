@@ -28,10 +28,17 @@ defmodule ProjectStatus.ConnCase do
       # Import URL helpers from the router
       import ProjectStatus.Router.Helpers
 
+
       # The default endpoint for testing
       @endpoint ProjectStatus.Endpoint
+
+      def authorised_conn do
+        header_content = "Basic " <> Base.encode64("ARSE:arse")
+        conn() |> put_req_header("authorization", header_content)
+      end
     end
   end
+
 
   setup tags do
     unless tags[:async] do

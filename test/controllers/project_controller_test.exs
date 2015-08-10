@@ -6,7 +6,7 @@ defmodule ProjectStatus.ProjectControllerTest do
   @invalid_attrs %{}
 
   setup do
-    conn = conn()
+    conn = authorised_conn()
     {:ok, conn: conn}
   end
 
