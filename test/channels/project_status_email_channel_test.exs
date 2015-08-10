@@ -70,7 +70,7 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
   end
 
   test "preview_content", %{socket: socket} do
-    ref = push socket, "preview_content", %{markdown: "# Hello"}
+    ref = push socket, "preview_content", %{"markdown" => "# Hello"}
     assert_reply ref, :ok, %{html: "<h1>Hello</h1>\n"}
   end
 end
