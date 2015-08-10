@@ -9,6 +9,8 @@ defmodule ProjectStatus.UserSocket do
   transport :websocket, Phoenix.Transports.WebSocket
   transport :longpoll, Phoenix.Transports.LongPoll
 
+  @two_weeks_in_seconds 1209600
+
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
   # verification, you can put default assigns into
@@ -17,8 +19,12 @@ defmodule ProjectStatus.UserSocket do
   #     {:ok, assign(socket, :user_id, verified_user_id)}
   #
   #  To deny connection, return `:error`.
-  def connect(_params, socket) do
-    {:ok, socket}
+  def connect(params = %{"token" => token}, socket) do
+    creds = ProjectStatus.Credentials.encoded
+    case Phoenix.Token.verify(socket, "creds", token, max_age: @two_weeks_in_seconds) do
+      {:ok, creds} -> {:ok, socket}
+      {:error, _} -> :error
+    end
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

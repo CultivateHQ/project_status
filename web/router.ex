@@ -19,5 +19,4 @@ defmodule ProjectStatus.Router do
       resources "/status_emails", StatusEmailController, only: [:show]
     end
   end
-
 end
