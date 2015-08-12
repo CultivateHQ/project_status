@@ -16,4 +16,4 @@ config :project_status, ProjectStatus.Repo,
   # username: System.get_env("POSTGRES_USER"),
   # password: System.get_env("POSTGRES_PASSWORD"),
   database: "project_status_test",
-  size: 1 # Use a single connection for transactional tests
+  pool_size: 1 # Use a single connection for transactional tests

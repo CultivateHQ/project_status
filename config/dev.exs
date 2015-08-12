@@ -32,4 +32,4 @@ config :project_status, ProjectStatus.Repo,
   # username: System.get_env("POSTGRES_USER"),
   # password: System.get_env("POSTGRES_PASSWORD"),
   database: "project_status_dev",
-  size: 10 # The amount of database connections in the pool
+  pool_size: 10 # The amount of database connections in the pool
