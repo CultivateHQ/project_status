@@ -17,3 +17,6 @@ config :project_status, ProjectStatus.Repo,
   # password: System.get_env("POSTGRES_PASSWORD"),
   database: "project_status_test",
   pool_size: 1 # Use a single connection for transactional tests
+
+
+import_config "config.secret.exs"

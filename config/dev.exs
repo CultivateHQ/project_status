@@ -33,3 +33,5 @@ config :project_status, ProjectStatus.Repo,
   # password: System.get_env("POSTGRES_PASSWORD"),
   database: "project_status_dev",
   pool_size: 10 # The amount of database connections in the pool
+
+import_config "config.secret.exs"
