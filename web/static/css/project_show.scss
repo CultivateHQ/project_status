@@ -22,6 +22,11 @@ form#new_project_email_recipient, form#new_status_email{
   }
 }
 
+#status_email_content_preview {
+  padding: 1em;
+  border: dashed 1px lightpink;
+}
+
 
 form#new_project_email_recipient {
   fieldset {
