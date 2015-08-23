@@ -38,7 +38,7 @@ defmodule ProjectStatus.Mixfile do
      {:chronos, "~> 1.4.0"},
      {:mailgun, "~> 0.1.1"},
      {:earmark, "~> 0.1.17"},
-     {:basic_auth, ">= 0.0.1"},
+     {:basic_auth, github: 'CultivateHQ/basic_auth', branch: 'application-config'},
      {:mock, ">= 0.0.0"}]
   end
 end

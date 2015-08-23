@@ -17,8 +17,9 @@ config :project_status, ProjectStatus.Repo,
        url: System.get_env("DATABASE_URL"),
        pool_size: 20
 
-
-config :basic_auth, username: System.get_env("BASIC_AUTH_USER"), password: System.get_env("BASIC_AUTH_PASSWORD")
+config :basic_auth, realm: "Project Status",
+        username: System.get_env("BASIC_AUTH_USER"),
+        password: System.get_env("BASIC_AUTH_PASSWORD")
 
 config :project_status,
   mailgun_domain: System.get_env("MAILGUN_DOMAIN"),
