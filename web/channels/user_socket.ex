@@ -19,10 +19,10 @@ defmodule ProjectStatus.UserSocket do
   #     {:ok, assign(socket, :user_id, verified_user_id)}
   #
   #  To deny connection, return `:error`.
-  def connect(params = %{"token" => token}, socket) do
+  def connect(%{"token" => token}, socket) do
     creds = ProjectStatus.Credentials.encoded
     case Phoenix.Token.verify(socket, "creds", token, max_age: @two_weeks_in_seconds) do
-      {:ok, creds} -> {:ok, socket}
+      {:ok, ^creds} -> {:ok, socket}
       {:error, _} -> :error
     end
   end
