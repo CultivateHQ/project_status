@@ -8,9 +8,10 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
   import Mock
 
   setup do
-    {:ok, _, socket} = subscribe_and_join(ProjectEmailRecipientChannel, "project_email_recipients:123")
-    socket_with_project_id = %{socket | assigns: %{project_id: "123"}} # test scaffolding doesn't reflect assigns
-    {:ok, socket: socket_with_project_id}
+    sock = socket()
+    |> subscribe_and_join!(ProjectEmailRecipientChannel, "project_email_recipients:123")
+    |> Map.put(:assigns, %{project_id: "123"})
+    {:ok, socket: sock}
   end
 
 
