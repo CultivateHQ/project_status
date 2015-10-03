@@ -4,7 +4,7 @@ defmodule ProjectStatus.Mixfile do
   def project do
     [app: :project_status,
      version: "0.0.1",
-     elixir: "~> 1.0",
+     elixir: "~> 1.1.1",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
      build_embedded: Mix.env == :prod,
@@ -38,7 +38,7 @@ defmodule ProjectStatus.Mixfile do
      {:chronos, "~> 1.4.0"},
      {:mailgun, "~> 0.1.1"},
      {:earmark, "~> 0.1.17"},
-     {:exrm, "~> 0.18.1"},
+     {:exrm, "~> 0.19.6"},
      {:basic_auth, "~> 1.0.0"},
      {:mock, ">= 0.0.0"}]
   end
