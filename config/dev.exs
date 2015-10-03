@@ -34,4 +34,4 @@ config :project_status, ProjectStatus.Repo,
   database: "project_status_dev",
   pool_size: 10 # The amount of database connections in the pool
 
-import_config "config.secret.exs"
+import_config "config.secret*.exs"
