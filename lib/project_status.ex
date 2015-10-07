@@ -11,6 +11,7 @@ defmodule ProjectStatus do
       supervisor(ProjectStatus.Endpoint, []),
       # Start the Ecto repository
       worker(ProjectStatus.Repo, []),
+      supervisor(ProjectStatus.Mailer.Supervisor, [])
       # Here you could define other workers and supervisors as children
       # worker(ProjectStatus.Worker, [arg1, arg2, arg3]),
     ]
