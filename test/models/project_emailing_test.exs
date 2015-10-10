@@ -3,7 +3,7 @@ defmodule ProjectStatus.ProjectEmailingTest do
   alias ProjectStatus.ProjectEmailing
   alias ProjectStatus.Project
   alias ProjectStatus.EmailRecipient
-  alias ProjectStatus.Mailing
+  alias ProjectStatus.Mailing.Mailer
   alias ProjectStatus.StatusEmail
 
   import Mock
@@ -41,21 +41,21 @@ defmodule ProjectStatus.ProjectEmailingTest do
 
   test "creating a valid status email" do
     project = create_project_with_recipients([{"bob", "bob@example.com"}, {"sue", "sue@example.com"}])
-    with_mock Mailing, [send: fn(_,_,_ ) -> {:ok, {}} end] do
+    with_mock Mailer, [send: fn(_,_,_ ) -> {:ok, {}} end] do
       assert {:ok, status_email} = project |>
         ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 3, day: 9}, "content" => "Stuff happened"})
       assert [status_email] = (project |> Repo.preload(:status_emails)).status_emails
       assert status_email.status_date |> Ecto.Date.to_erl == {2015, 3, 9}
       assert status_email.subject == "Status update - A project - 2015-03-09"
       assert status_email.content == "Stuff happened"
-      assert called Mailing.send "bob <bob@example.com>,sue <sue@example.com>", status_email.subject, status_email.content
+      assert called Mailer.send "bob <bob@example.com>,sue <sue@example.com>", status_email.subject, status_email.content
     end
   end
 
   test "email failed to send" do
     project = create_project_with_recipients {"bob", "bob@exmple.com"}
-    with_mock Mailing, [send: fn(_,_,_) -> {:error, :reason, {}} end] do
-      {:error, {:email_failed, _}} = project |>
+    with_mock Mailer, [send: fn(_,_,_) -> :error end] do
+      {:error, :email_failed} = project |>
         ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 3, day: 9}, "content" => "Stuff happened"})
       assert 0 == (from e in StatusEmail, select: count(e.id)) |> Repo.one
     end
@@ -63,7 +63,7 @@ defmodule ProjectStatus.ProjectEmailingTest do
 
   test "email fails validation" do
     project = create_project_with_recipients {"bob", "bob@exmple.com"}
-    with_mock Mailing, [send: fn(_,_,_) -> flunk "Email should not send" end] do
+    with_mock Mailer, [send: fn(_,_,_) -> flunk "Email should not send" end] do
       {:error, changeset} = project |> ProjectEmailing.create_status_email(%{"status_date" => %{year: 2015, month: 1, day: 9}})
       assert 0 == (from e in StatusEmail, select: count(e.id)) |> Repo.one
       assert %Ecto.Changeset{valid?: false} = changeset
