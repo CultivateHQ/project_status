@@ -3,7 +3,6 @@ defmodule ProjectStatus.ProjectEmailing do
   alias ProjectStatus.EmailRecipient
   alias ProjectStatus.StatusEmail
   alias ProjectStatus.Repo
-  alias ProjectStatus.Mailing
 
   import Ecto.Query
 
@@ -53,7 +52,7 @@ defmodule ProjectStatus.ProjectEmailing do
     if changeset.valid? do
       case send_email(project_id, attributes) do
         {:ok, _} -> {:ok, changeset |> Repo.insert!}
-        {_, reason, other} -> {:error, {:email_failed, {reason, other}}}
+        _ -> {:error, :email_failed}
       end
     else
       {:error, changeset}
@@ -80,7 +79,7 @@ defmodule ProjectStatus.ProjectEmailing do
   end
 
   defp send_email(project_id, email_attributes) do
-    Mailing.send recipients_as_string(project_id), email_attributes["subject"], email_attributes["content"]
+    ProjectStatus.Mailing.Mailer.send recipients_as_string(project_id), email_attributes["subject"], email_attributes["content"]
   end
 
   defp recipients_as_string(project_id) do
