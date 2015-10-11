@@ -3,11 +3,7 @@ defmodule ProjectStatus.ProjectStatusEmailChannel do
   alias ProjectStatus.ProjectEmailing
 
   def join("project_status_emails:"<>project_id, payload, socket) do
-    if authorized?(payload) do
-      {:ok, assign(socket, :project_id, project_id)}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+    {:ok, assign(socket, :project_id, project_id)}
   end
 
   def handle_in("send_status_email", %{"status_date" => status_date, "content" => ""}, socket) do
@@ -43,11 +39,5 @@ defmodule ProjectStatus.ProjectStatusEmailChannel do
     |> String.split("-")
     |> Enum.map(&(&1 |> String.to_integer))
     %{year: year, month: month, day: day}
-  end
-
-
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
   end
 end

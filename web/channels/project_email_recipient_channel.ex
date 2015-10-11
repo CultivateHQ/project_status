@@ -9,11 +9,7 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
   end
 
   def join("project_email_recipients:"<>project_id, payload, socket) do
-    if authorized?(payload) do
-      {:ok, assign(socket, :project_id, project_id)}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+    {:ok, assign(socket, :project_id, project_id)}
   end
 
   def handle_in("new_project_email_recipient", email_recipient_params = %{"email" => _, "name" => _}, socket) do
@@ -36,10 +32,5 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
   def handle_in("project_email_recipients", _, socket) do
     recipients = ProjectEmailing.project_recipients(socket.assigns[:project_id])
     {:reply, {:ok, %{project_email_recipients: recipients}}, socket}
-  end
-
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
   end
 end
