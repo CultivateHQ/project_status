@@ -10,7 +10,6 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
   setup do
     sock = socket()
     |> subscribe_and_join!(ProjectEmailRecipientChannel, "project_email_recipients:123")
-    |> Map.put(:assigns, %{project_id: "123"})
     {:ok, socket: sock}
   end
 
