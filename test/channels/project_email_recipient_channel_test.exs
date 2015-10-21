@@ -35,7 +35,7 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
 
   test "new_project_email_recipient params are scrubbed", %{socket: socket} do
     ref = push socket, "new_project_email_recipient", %{"name" => "", "email" => ""}
-    assert_reply ref, :error, %{} 
+    assert_reply ref, :error, %{}
   end
 
   test "recipient deleted", %{socket: socket, project_id: project_id} do
