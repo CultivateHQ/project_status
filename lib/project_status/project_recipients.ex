@@ -6,7 +6,7 @@ defmodule ProjectStatus.ProjectRecipients do
   # alias ProjectStatus.StatusEmail
   alias ProjectStatus.Repo
 
-  # import Ecto.Query
+  import Ecto.Query
 
   ##
   # API
@@ -22,6 +22,10 @@ defmodule ProjectStatus.ProjectRecipients do
 
   def delete_recipient(pid, recipient_id) do
     GenServer.call(pid, {:delete_recipient, recipient_id})
+  end
+
+  def project_recipients(pid) do
+    GenServer.call(pid, :project_recipients)
   end
 
   ##
@@ -46,6 +50,12 @@ defmodule ProjectStatus.ProjectRecipients do
   def handle_call({:delete_recipient, recipient_id}, _from, state) do
     Repo.get(EmailRecipient, recipient_id) |> Repo.delete!
     {:reply, :ok, state}
+  end
+
+  def handle_call(:project_recipients, _from, {_, project_id} = state) do
+    recipients = (from r in EmailRecipient, where: r.project_id == ^project_id)
+    |> Repo.all
+    {:reply, {:ok, recipients}, state}
   end
 
   # private

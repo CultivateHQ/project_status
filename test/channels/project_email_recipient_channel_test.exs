@@ -39,13 +39,13 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
   end
 
   test "recipient deleted", %{socket: socket, project_id: project_id} do
-    delete_id = insert_recipient(project_id, "Mavis")
+    delete_id = insert_recipient(project_id, "Mavis").id
     ref = push socket, "delete_project_email_recipient", %{"id" => delete_id}
     assert_reply ref, :ok, %{id: delete_id}
   end
 
   test "deleted recipient broadcast", %{socket: socket, project_id: project_id} do
-    delete_id = insert_recipient(project_id, "Mavis")
+    delete_id = insert_recipient(project_id, "Mavis").id
     push socket, "delete_project_email_recipient", %{"id" => delete_id}
     assert_broadcast  "delete_project_email_recipient", %{id: delete_id}
   end
@@ -57,7 +57,6 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
   end
 
   defp insert_recipient(project_id, name) do
-    %{id: id} = %EmailRecipient{project_id: 123, name: name} |> Map.merge(@valid_attrs) |> Repo.insert!
-    id
+    %EmailRecipient{project_id: 123, name: name} |> Map.merge(@valid_attrs) |> Repo.insert!
   end
 end

@@ -31,7 +31,19 @@ defmodule ProjectRecipientsTest do
     assert Repo.all(EmailRecipient) |> length == 0
   end
 
+  test "retrieving recipients", %{pid: pid, project: project} do
+    other_project = create_project("other")
+    create_project_recipient(other_project)
+    recipients = [create_project_recipient(project), create_project_recipient(project)]
+    assert {:ok, recipients} == pid |> ProjectRecipients.project_recipients
+  end
+
   defp create_project(name \\ "A project") do
     Repo.insert! %Project{name: name}
+  end
+
+
+  defp create_project_recipient(project) do
+    %EmailRecipient{project_id: project.id} |> Repo.insert!
   end
 end

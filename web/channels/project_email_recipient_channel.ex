@@ -1,6 +1,5 @@
 defmodule ProjectStatus.ProjectEmailRecipientChannel do
   use ProjectStatus.Web, :channel
-  alias ProjectStatus.ProjectEmailing
   alias ProjectStatus.ProjectRecipients
 
   # Ok, this may be silly. Use the controller param scrubbing, but don't bothe
@@ -34,7 +33,7 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
   end
 
   def handle_in("project_email_recipients", _, socket) do
-    recipients = ProjectEmailing.project_recipients(socket.assigns[:project_id])
+    {:ok, recipients} = socket.assigns.recipients_pid |> ProjectRecipients.project_recipients
     {:reply, {:ok, %{project_email_recipients: recipients}}, socket}
   end
 end
