@@ -2,93 +2,62 @@ defmodule ProjectStatus.ProjectEmailRecipientChannelTest do
   use ProjectStatus.ChannelCase
 
   alias ProjectStatus.ProjectEmailRecipientChannel
-  alias ProjectStatus.ProjectEmailing
+  alias ProjectStatus.Project
   alias ProjectStatus.EmailRecipient
+  alias ProjectStatus.Repo
 
-  import Mock
+  @valid_attrs %{"email" => "bob@bob.com", "name" => "name"}
+  @invalid_attrs %{}
 
   setup do
+    %{id: project_id} = %Project{name: "A project"} |> Repo.insert!
     sock = socket()
-    |> subscribe_and_join!(ProjectEmailRecipientChannel, "project_email_recipients:123")
-    {:ok, socket: sock}
+    |> subscribe_and_join!(ProjectEmailRecipientChannel, "project_email_recipients:#{project_id}")
+    {:ok, socket: sock, project_id: project_id}
   end
 
 
-  test "new_project_email_recipient returns :ok, with the new recipient, on success", %{socket: socket} do
-    recipient = %EmailRecipient{name: "bob"}
-    with_mock ProjectEmailing,
-    [add_recipient_to_project: fn(_, _) -> {:ok, recipient} end] do
-
-      ref = push socket, "new_project_email_recipient", %{"email" => "", "name" => ""}
-      assert_reply ref, :ok, %{email_recipient: recipient}
-    end
+  test "new_project_email_recipient returns :ok, with the new recipient, on success", %{socket: socket, project_id: project_id} do
+    ref = push socket, "new_project_email_recipient", @valid_attrs
+    assert_reply ref, :ok, %{email_recipient: %{email: "bob@bob.com", project_id: project_id}}
   end
 
   test "new_project_email_recipient broadcasts the new recipient", %{socket: socket} do
-    recipient = %EmailRecipient{name: "bob"}
-    with_mock ProjectEmailing,
-    [add_recipient_to_project: fn(_, _) -> {:ok, recipient} end] do
-
-      push socket, "new_project_email_recipient", %{"email" => "", "name" => ""}
-      assert_broadcast "new_project_email_recipient", %{email_recipient: recipient}
-    end
+    ref = push socket, "new_project_email_recipient", @valid_attrs
+    assert_broadcast "new_project_email_recipient", %{email_recipient: %{email: "bob@bob.com"}}
   end
 
   test "new_project_email_recipient returns :error with changest on failure", %{socket: socket} do
-    changeset = EmailRecipient.changeset(%EmailRecipient{}, %{name: "bob"})
-    with_mock ProjectEmailing, [add_recipient_to_project: fn(_,_) -> {:error, changeset} end] do
-      ref = push socket, "new_project_email_recipient", %{"email" => "", "name" => ""}
-      assert_reply ref, :error, %{changeset: changeset}
-    end
-  end
-
-  test "new_project_email_recipient calls ProjectEmailing.add_recipient_to_project with project id and params",
-    %{socket: socket} do
-    with_mock ProjectEmailing, [add_recipient_to_project: fn(project_id, params) ->
-                                 assert project_id == "123"
-                                 assert params == %{"name" => "bob", "email" => "bob@bob.com"}
-                                 {:ok, %EmailRecipient{}}
-                               end] do
-      ref = push socket, "new_project_email_recipient", %{"name" => "bob", "email" => "bob@bob.com"}
-      assert_reply ref, :ok, %{email_recipient: %{}} #without assert message is not pushed
-    end
+    changeset = EmailRecipient.changeset(%EmailRecipient{}, @invalid_attrs)
+    ref = push socket, "new_project_email_recipient", %{"email" => "", "name" => ""}
+    assert_reply ref, :error, %{changeset: changeset}
   end
 
   test "new_project_email_recipient params are scrubbed", %{socket: socket} do
-    with_mock ProjectEmailing, [add_recipient_to_project: fn(_, params) ->
-                                   assert params == %{"name" => nil, "email" => nil}
-                                   {:ok, %EmailRecipient{}}
-                                 end] do
-      ref = push socket, "new_project_email_recipient", %{"name" => "", "email" => ""}
-      assert_reply ref, :ok, %{email_recipient: %{}} #without assert message is not pushed
-    end
+    ref = push socket, "new_project_email_recipient", %{"name" => "", "email" => ""}
+    assert_reply ref, :error, %{} 
   end
 
-  test "recipient deleted", %{socket: socket} do
-    with_mock ProjectEmailing, [delete_email_recipient: fn(id) ->
-                                 assert id == "456"
-                                 :ok
-                               end] do
-      ref = push socket, "delete_project_email_recipient", %{"id" => "456"}
-      assert_reply ref, :ok, %{id: "456"}
-    end
+  test "recipient deleted", %{socket: socket, project_id: project_id} do
+    delete_id = insert_recipient(project_id, "Mavis")
+    ref = push socket, "delete_project_email_recipient", %{"id" => delete_id}
+    assert_reply ref, :ok, %{id: delete_id}
   end
 
-  test "deleted recipient broadcast", %{socket: socket} do
-    with_mock ProjectEmailing, [delete_email_recipient: fn(_) -> :ok end] do
-      push socket, "delete_project_email_recipient", %{"id" => "790"}
-      assert_broadcast  "delete_project_email_recipient", %{id: "790"}
-    end
+  test "deleted recipient broadcast", %{socket: socket, project_id: project_id} do
+    delete_id = insert_recipient(project_id, "Mavis")
+    push socket, "delete_project_email_recipient", %{"id" => delete_id}
+    assert_broadcast  "delete_project_email_recipient", %{id: delete_id}
   end
 
-  test "project recipients", %{socket: socket} do
-    recipients = [%EmailRecipient{name: "bob"}, %EmailRecipient{name: "mavis"}]
-    with_mock ProjectEmailing, [project_recipients: fn(project_id) ->
-                               assert project_id == "123"
-                               recipients
-                               end] do
-      ref = push socket, "project_email_recipients"
-      assert_reply ref, :ok, %{project_email_recipients: recipients}
-    end
+  test "project recipients", %{socket: socket, project_id: project_id} do
+    recipients = [insert_recipient(project_id, "Bob"), insert_recipient(project_id, "Mavis")]
+    ref = push socket, "project_email_recipients"
+    assert_reply ref, :ok, %{project_email_recipients: recipients}
+  end
+
+  defp insert_recipient(project_id, name) do
+    %{id: id} = %EmailRecipient{project_id: 123, name: name} |> Map.merge(@valid_attrs) |> Repo.insert!
+    id
   end
 end
