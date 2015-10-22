@@ -35,7 +35,8 @@ defmodule ProjectStatus.ProjectEmailing do
   defp add_recipient(params) do
     changeset = EmailRecipient.changeset(%EmailRecipient{}, params)
     if changeset.valid? do
-      {:ok, changeset |> Repo.insert!}
+      {:ok, recipient} = Repo.insert(changeset)
+      {:ok, recipient}
     else
       {:error, changeset}
     end
