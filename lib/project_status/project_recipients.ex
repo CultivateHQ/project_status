@@ -58,7 +58,7 @@ defmodule ProjectStatus.ProjectRecipients do
     {:reply, {:ok, recipients}, state}
   end
 
-  # privates
+  # private
   defp add_recipient(params) do
     changeset = EmailRecipient.changeset(%EmailRecipient{}, params)
     if changeset.valid? do
