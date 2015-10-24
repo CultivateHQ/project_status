@@ -45,7 +45,7 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
     changeset = {:dummy_changeset}
     with_mock ProjectEmailing, [create_status_email: fn(_,_) -> {:error, changeset} end ] do
       ref = push socket, "send_status_email", %{"status_date" => "2014-11-2", "content" => "content"}
-      assert_reply ref, :error, %{changeset: changeset}
+      assert_reply ref, :error, %{changeset: ^changeset}
     end
   end
 
@@ -53,8 +53,8 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
     model = %{fake_model: :fake}
     with_mock ProjectEmailing, [create_status_email: fn(_,_) -> {:ok, model} end ] do
       ref = push socket, "send_status_email", %{"status_date" => "2014-11-2", "content" => "content"}
-      assert_reply ref, :ok, %{status_email: model}
-      assert_broadcast "new_status_email", model
+      assert_reply ref, :ok, %{status_email: ^model}
+      assert_broadcast "new_status_email", ^model
     end
   end
 
@@ -65,7 +65,7 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
                                  emails
                                end ] do
       ref = push socket, "get_project_status_emails"
-      assert_reply ref, :ok, %{status_emails: emails}
+      assert_reply ref, :ok, %{status_emails: ^emails}
     end
   end
 
