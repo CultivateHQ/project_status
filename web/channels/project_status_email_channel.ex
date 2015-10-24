@@ -2,7 +2,7 @@ defmodule ProjectStatus.ProjectStatusEmailChannel do
   use ProjectStatus.Web, :channel
   alias ProjectStatus.ProjectEmailing
 
-  def join("project_status_emails:"<>project_id, payload, socket) do
+  def join("project_status_emails:"<>project_id, _payload, socket) do
     socket = assign(socket, :avalue, :emails)
     {:ok, assign(socket, :project_id, project_id)}
   end
