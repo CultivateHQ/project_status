@@ -16,7 +16,7 @@ defmodule ProjectRecipientsTest do
     |> ProjectRecipients.add_recipient_to_project(%{"name" => "bob", "email" => "bob@bob.com"})
 
     [loaded_recipient] = (project |> Repo.preload(:email_recipients)).email_recipients
-    assert loaded_recipient |> Map.take([:name, :email]) == %{name: "bob", email: "bob@bob.com"}
+    assert loaded_recipient == recipient
   end
 
   test "failing to add recipients to a project", %{pid: pid} do

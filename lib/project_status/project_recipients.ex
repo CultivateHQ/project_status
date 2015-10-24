@@ -13,8 +13,8 @@ defmodule ProjectStatus.ProjectRecipients do
   def start(project_id) do
     {:ok, pid} = Supervisor.start_child(ProjectStatus.ProjectRecipientsSupervisor, [self, project_id])
     Process.link(pid)
-    {:ok, pid} 
-  end 
+    {:ok, pid}
+  end
 
   def add_recipient_to_project(pid, recipient) do
     GenServer.call(pid, {:add_recipient_to_project, recipient})
@@ -60,25 +60,11 @@ defmodule ProjectStatus.ProjectRecipients do
 
   # private
   defp add_recipient(params) do
-    changeset = EmailRecipient.changeset(fix_meta_source(%EmailRecipient{}), params)
+    changeset = EmailRecipient.changeset(%EmailRecipient{}, params)
     if changeset.valid? do
       changeset |> Repo.insert
     else
       {:error, changeset}
     end
-  end
-
-  ##
-  # Encountering a weird problem where %EmailRecipient.__meta__source is `"email_recipients" `
-  # not `{nil, "email_recipients}` on a fresh compile. It happens consistently in the same place,
-  # such as always in this file, but without any discernable pattern in the code
-  # ¯\_(ツ)_/¯	
-  defp fix_meta_source(r = %EmailRecipient{__meta__: %{source: {_, _}}}) do
-    r
-  end
-
-  defp fix_meta_source(r = %EmailRecipient{__meta__: meta = %{source: source}}) do
-    fixed_meta = meta |> Map.put(:source, {nil, source})
-    r |> Map.put(:__meta__, fixed_meta)
   end
 end
