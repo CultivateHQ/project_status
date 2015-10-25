@@ -17,6 +17,7 @@ defmodule ProjectStatus.Mailing.Mailer do
         send(pid, :shutdown)
         {:ok, result}
       {:DOWN, _ref, :process, ^pid, _info} -> :error
+      _ -> :error
     after @timeout ->
       Process.demonitor(monitor_ref)
       Process.exit(pid, :kill)
