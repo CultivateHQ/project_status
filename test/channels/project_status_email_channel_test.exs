@@ -8,11 +8,7 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
   alias ProjectStatus.Repo
 
   setup do
-    if Process.whereis(:mailer_supervisor) do
-      Process.unregister(:mailer_supervisor)
-    end
-    Agent.start_link(fn -> %{emailing_result: {:ok, []} } end, name: :dummy_email_state)
-    ProjectStatus.ProjectStatusEmailChannelTest.DummyMailerSupervisor.start_link
+    DummyMailer.start_link
 
     %{id: project_id} = %Project{name: "test project"} |> Repo.insert!
 
@@ -36,7 +32,7 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
   end
 
   test "new_status_email replies with :error if failed to send", %{socket: socket} do
-    Agent.update(:dummy_email_state, fn state -> state |> Map.put(:emailing_result, :error) end)
+    DummyMailer.set_emailing_result(:error)
     ref = push socket, "send_status_email", %{"status_date" => "2014-11-2", "content" => "content"}
     assert_reply ref, :email_failed
   end
@@ -63,37 +59,4 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
   end
 
 
-  defmodule DummyMailerSupervisor do
-    alias ProjectStatus.ProjectStatusEmailChannelTest.DummyMailerSupervisor.DummyMailerWorker
-    use Supervisor
-
-    def start_link() do
-      Supervisor.start_link(__MODULE__, [], name: :mailer_supervisor)
-    end
-
-    def init(_) do
-      children = [
-        worker(DummyMailerWorker, [], restart: :temporary)
-      ]
-      supervise(children, strategy: :simple_one_for_one)
-    end
-
-    defmodule DummyMailerWorker do
-      use GenServer
-
-      def start_link(client_pid, email) do
-        GenServer.start_link(__MODULE__, {client_pid, email})
-      end
-
-      def init({client_pid, _} = args) do
-        send(client_pid, Agent.get(:dummy_email_state, fn %{emailing_result: res} -> res end))
-        IO.inspect args
-        {:ok, args}
-      end
-
-      def handle_info(:shutdown, args) do
-        {:stop, :shutdown, args}
-      end
-    end
-  end
 end
