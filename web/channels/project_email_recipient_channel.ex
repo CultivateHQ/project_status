@@ -11,7 +11,6 @@ defmodule ProjectStatus.ProjectEmailRecipientChannel do
   def join("project_email_recipients:"<>project_id, _payload, socket) do
     {:ok, recipients_pid} = ProjectRecipients.start(project_id)
     {:ok, socket
-     |> assign(:project_id, project_id)
      |> assign(:recipients_pid, recipients_pid)}
   end
 
