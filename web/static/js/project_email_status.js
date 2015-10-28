@@ -32,7 +32,8 @@ function indicateTimeout(){
     showErrors(["Sorry, the request timed out. Please try again."])
 }
 
-function clearForm(){
+function clearEmailText(){
+    $('#status_email_content_preview').html('')
     $('#new_status_email textarea').val("")
 }
 
@@ -97,7 +98,7 @@ function sendNewEmail(statusDate, content){
     chan.push("send_status_email", {status_date: statusDate, content: content})
         .receive("ok", payload => {
             indicateSubmissionFinished()
-            clearForm()
+            clearEmailText()
             clearErrors()
             flashUpMessage("Email has been created")
         })
