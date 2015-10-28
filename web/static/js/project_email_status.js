@@ -1,4 +1,7 @@
 import {flashUpMessage} from "web/static/js/flashup"
+
+let TIMEOUT = 5000;
+
 let projectId = null,
     socket = null,
     chan = null
@@ -56,7 +59,7 @@ function loadStatusEmails(){
                 addStatusEmailToDisplay(email)
             })
         }).
-        after(2000, () => {flashUpMessage("Can't load email recipients")})
+        after(TIMEOUT, () => {flashUpMessage("Can't load email recipients")})
 }
 
 function addStatusEmailToDisplay(email) {
@@ -110,7 +113,7 @@ function sendNewEmail(statusDate, content){
             indicateSubmissionFinished()
             showErrors(["Sorry, the email has failed to send. Try again?"])
         })
-        .after(2000, () => {
+        .after(TIMEOUT, () => {
             indicateTimeout()
         })
 }
