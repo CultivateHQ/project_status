@@ -10,7 +10,9 @@ defmodule ProjectStatus.ProjectEmails do
   ##
   # API
   def start(project_id) do
-    Supervisor.start_child(ProjectStatus.ProjectEmailsSupervisor, [project_id])
+    {:ok, pid} = Supervisor.start_child(ProjectStatus.ProjectEmailsSupervisor, [project_id])
+    Process.link(pid)
+    {:ok, pid}
   end
 
   def create_status_email(pid, email_params) do
