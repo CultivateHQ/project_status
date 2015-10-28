@@ -10,7 +10,7 @@ defmodule ProjectStatus.ProjectEmails do
   ##
   # API
   def start(project_id) do
-    {:ok, pid} = Supervisor.start_child(ProjectStatus.ProjectEmailsSupervisor, [project_id])
+    Supervisor.start_child(ProjectStatus.ProjectEmailsSupervisor, [project_id])
   end
 
   def create_status_email(pid, email_params) do
@@ -48,13 +48,18 @@ defmodule ProjectStatus.ProjectEmails do
   end
 
   def handle_call({:project_status_email, email_id}, _from, project_id) do
-    reply = case (from e in StatusEmail,
-                  where: e.id == ^email_id
-                  and e.project_id == ^project_id) |> Repo.one do
-              nil -> {:error, :not_found}
-              email -> {:ok, email}
-            end
+    reply = do_project_status_email(project_id, email_id)
     {:reply, reply, project_id}
+  end
+
+
+  def do_project_status_email(project_id, email_id) do
+    case (from e in StatusEmail,
+          where: e.id == ^email_id
+          and e.project_id == ^project_id) |> Repo.one do
+      nil -> {:error, :not_found}
+      email -> {:ok, email}
+    end
   end
 
   defp do_create_status_email(project_id, params = %{"status_date" => status_date}) do
