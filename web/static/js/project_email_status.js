@@ -48,6 +48,7 @@ function createChannel(){
 }
 
 function loadStatusEmails(){
+    $('#sent_status_emails').html('')
     chan.push("get_project_status_emails").
         receive("ok", payload => {
             payload.status_emails.forEach(email => {

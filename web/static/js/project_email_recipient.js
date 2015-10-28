@@ -131,6 +131,7 @@ function bindDeleteButtons(buttons = $("#recipient_list a.delete_recipient")){
 }
 
 function loadProjectEmailRecipients(){
+    recipientsContainer().html("")
     chan.push("project_email_recipients").
         receive("ok", payload => {
             payload.project_email_recipients.forEach(recipient => {
