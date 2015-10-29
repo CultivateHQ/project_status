@@ -2,4 +2,4 @@
 app_name: project_status
 repo_url: "git@github.com:CultivateHQ/project_status.git"
 app_port: 3001
-domains: ["projstatus.cultivatehq.com"]
+domains: ["projectstatus.cultivatehq.com"]
