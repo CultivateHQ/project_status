@@ -35,7 +35,7 @@ defmodule ProjectStatus.Mailing.Mailer do
   end
 
   def handle_info(:send_email, {client_pid, {recipients, subject, content}} = args) do
-    send_email to: recipients, from: @from, subject: subject, text: content, html: Earmark.to_html(content)
+    {:ok, _} = send_email(to: recipients, from: @from, subject: subject, text: content, html: Earmark.to_html(content))
     send(client_pid, {:ok, []})
     {:noreply, args}
   end
