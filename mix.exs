@@ -19,7 +19,7 @@ defmodule ProjectStatus.Mixfile do
     [mod: {ProjectStatus, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex,
-                    :chronos, :mailgun, :earmark, :exrm, :basic_auth, :ssl]]
+                    :chronos, :mailgun, :earmark, :exrm, :basic_auth]]
   end
 
   # Specifies which paths to compile per environment
