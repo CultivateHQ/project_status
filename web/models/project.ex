@@ -5,6 +5,7 @@ defmodule ProjectStatus.Project do
 
   schema "projects" do
     field :name, :string
+    field :trello_project_id, :string
 
     has_many :email_recipients, EmailRecipient
     has_many :status_emails, StatusEmail
@@ -12,7 +13,7 @@ defmodule ProjectStatus.Project do
   end
 
   @required_fields ~w(name)
-  @optional_fields ~w()
+  @optional_fields ~w(trello_project_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

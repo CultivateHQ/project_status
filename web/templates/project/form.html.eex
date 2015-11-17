@@ -16,6 +16,11 @@
   </div>
 
   <div class="form-group">
+    <label>Trello url</label>
+    <%= text_input f, :trello_url, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
