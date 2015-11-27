@@ -1,7 +1,7 @@
 defmodule TrelloTest do
   use ExUnit.Case
 
-  import ProjectStatus.Trello
+  import Trello
 
 
   test "extracting trello id from url" do

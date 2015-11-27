@@ -16,8 +16,8 @@
   </div>
 
   <div class="form-group">
-    <label>Trello url</label>
-    <%= text_input f, :trello_url, class: "form-control" %>
+    <label>Trello project id</label>
+    <%= text_input f, :trello_project_id, class: "form-control" %>
   </div>
 
   <div class="form-group">
