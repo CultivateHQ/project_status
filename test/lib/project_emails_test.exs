@@ -23,7 +23,7 @@ defmodule ProjectEmailsTest do
     assert status_email.subject == "Status update - A project - 2015-03-09"
     assert status_email.content == "Stuff happened"
     assert [{"Mavis <mavis@example.com>,Sue <sue@example.com>",
-             "Status update - A project - 2015-03-09", "Stuff happened"}] == DummyMailer.emails_sent
+             "Status update - A project - 2015-03-09", "Stuff happened\n\nfeets"}] == DummyMailer.emails_sent
   end
 
   test "email failed to send", %{pid: pid} do
@@ -35,7 +35,7 @@ defmodule ProjectEmailsTest do
 
   test "email fails validation", %{pid: pid} do
     {:error, _changeset} = pid
-    |> ProjectEmails.create_status_email(%{"status_date" => %{year: 2015, month: 1, day: 9}})
+    |> ProjectEmails.create_status_email(%{"status_date" => %{year: 2015, month: 1, day: 9}, "content" => nil})
     assert 0 == (from e in StatusEmail, select: count(e.id)) |> Repo.one
     assert [] == DummyMailer.emails_sent
   end
@@ -63,12 +63,16 @@ defmodule ProjectEmailsTest do
     assert {:error, :not_found} == pid |> ProjectEmails.project_status_email(wrong_email.id)
   end
 
+  test "email_footer", %{pid: pid} do
+    assert "\n\nfeets" == ProjectEmails.email_footer(pid)
+  end
+
   defp create_status_email(%Project{id: project_id})do
     %ProjectStatus.StatusEmail{project_id: project_id} |> Repo.insert!
   end
 
   defp create_project(name \\ "A project") do
-    %Project{name: name}
+    %Project{name: name, email_footer: "feets"}
     |> Repo.insert!
     |> add_recipients_to_project([{"Mavis", "mavis@example.com"}, {"Sue", "sue@example.com"}])
   end

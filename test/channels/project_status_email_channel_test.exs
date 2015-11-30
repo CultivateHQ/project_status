@@ -59,4 +59,14 @@ defmodule ProjectStatus.ProjectStatusEmailChannelTest do
   end
 
 
+  test "preview content with footer", %{socket: socket, project_id: project_id} do
+    project = Repo.get(Project, project_id)
+    changeset = Project.changeset(project, %{"email_footer" => "Marvellous!"})
+    Repo.update!(changeset)
+
+    ref = push(socket, "preview_content", %{"markdown" => "hi"})
+    assert_reply ref, :ok, %{html: "<p>hi</p>\n<p>Marvellous!</p>\n"}
+
+  end
+
 end

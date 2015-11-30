@@ -27,6 +27,10 @@ defmodule ProjectStatus.ProjectEmails do
     pid |> GenServer.call({:project_status_email, email_id})
   end
 
+  def email_footer(pid) do
+    pid |> GenServer.call(:email_footer)
+  end
+
   def start_link(project_id) do
     GenServer.start_link(__MODULE__, project_id)
   end
@@ -54,6 +58,9 @@ defmodule ProjectStatus.ProjectEmails do
     {:reply, reply, project_id}
   end
 
+  def handle_call(:email_footer, _from, project_id) do
+    {:reply, get_email_footer(project_id), project_id}
+  end
 
   def do_project_status_email(project_id, email_id) do
     case (from e in StatusEmail,
@@ -64,9 +71,13 @@ defmodule ProjectStatus.ProjectEmails do
     end
   end
 
-  defp do_create_status_email(project_id, params = %{"status_date" => status_date}) do
+
+  defp do_create_status_email(project_id, params = %{"status_date" => status_date, "content" => content}) do
     subject = "Status update - #{project_name(project_id)} - #{format_date(status_date)}"
-    attributes = params |> Map.merge(%{"project_id" => project_id, "subject" => subject})
+    attributes = %{"project_id" => project_id,
+                   "subject" => subject,
+                   "content" => content,
+                   "status_date" => status_date}
     changeset = StatusEmail.changeset(%StatusEmail{}, attributes)
     if changeset.valid? do
       case send_email(project_id, attributes) do
@@ -75,6 +86,14 @@ defmodule ProjectStatus.ProjectEmails do
       end
     else
       {:error, changeset}
+    end
+  end
+
+  defp get_email_footer(project_id) do
+    case footer = (from p in Project, where: p.id == ^project_id, select: p.email_footer)
+    |> Repo.one do
+      nil -> ""
+      footer -> "\n\n" <> footer
     end
   end
 
@@ -87,7 +106,8 @@ defmodule ProjectStatus.ProjectEmails do
   end
 
   defp send_email(project_id, email_attributes) do
-    ProjectStatus.Mailing.Mailer.send recipients_as_string(project_id), email_attributes["subject"], email_attributes["content"]
+    content = email_attributes["content"] <> get_email_footer(project_id)
+    ProjectStatus.Mailing.Mailer.send recipients_as_string(project_id), email_attributes["subject"], content
   end
 
   defp recipients_as_string(project_id) do

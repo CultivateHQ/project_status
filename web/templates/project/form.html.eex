@@ -21,6 +21,11 @@
   </div>
 
   <div class="form-group">
+    <label>Footer (markdown)</label>
+    <%= textarea f, :email_footer, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

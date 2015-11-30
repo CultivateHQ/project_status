@@ -31,7 +31,8 @@ defmodule ProjectStatus.ProjectStatusEmailChannel do
   end
 
   def handle_in("preview_content", %{"markdown" => markdown}, socket) do
-    html = markdown |> Earmark.to_html
+    full_markdown = markdown <> ProjectEmails.email_footer(socket.assigns.emails_pid)
+    html = full_markdown |> Earmark.to_html
     {:reply, {:ok, %{html: html}}, socket}
   end
 
