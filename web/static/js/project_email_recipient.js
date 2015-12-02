@@ -109,7 +109,7 @@ function submitDeleteRecipient(emailRecipientId){
         }).
         after(2000, () => {
             $('a.delete_recipient.submitting').removeClass("submitting")
-            alert("Timeout deleting :-(")
+            showErrors(["Timeout deleting :-()"])
         })
 }
 
@@ -138,7 +138,7 @@ function loadProjectEmailRecipients(){
                 addRecipientToDisplay(recipient)
             })
         }).
-        after(2000, () => {alert("Can't load email recipients")})
+        after(2000, () => {showErrors(["Can't load email recipients"])})
 }
 
 export function initProjectEmailRecipient(socket_) {

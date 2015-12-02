@@ -4,6 +4,7 @@ defmodule ProjectStatus.UserSocket do
   ## Channels
   channel "project_email_recipients:*", ProjectStatus.ProjectEmailRecipientChannel
   channel "project_status_emails:*", ProjectStatus.ProjectStatusEmailChannel
+  channel "trellos:*", ProjectStatus.TrelloChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

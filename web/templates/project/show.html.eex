@@ -1,26 +1,16 @@
-<div id="project" data-project-id="<%= @project.id %>">
+<div id="project" data-project-id="<%= @project.id %>" data-trello-project-id="<%= @project.trello_project_id %>">
 <h2><%= @project.name %></h2>
 
 <h3>New status email</h3>
 <%= if @project.trello_project_id do %>
     <p><%= link "Go to Trello board", to: "https://trello.com/b/#{@project.trello_project_id}", target: "trello" %>
 <% end %>
-<%= if @trello_totals do %>
-    <table class="trello_totals">
-        <thead>
-            <%= for {board, _total} <- @trello_totals do %>
-                <th><%= board %></th>
-            <% end %>
-        </thead>
-        <tbody>
-            <tr>
-                <%= for {_board, total} <- @trello_totals do %>
-                    <td><%= total %></td>
-                <% end %>
-            </tr>
-        </tbody>
-    </table>
-<% end %>
+<table id="trello_totals">
+    <thead>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 <form id="new_status_email">
   <ul class="errors"></ul>
   <fieldset>
