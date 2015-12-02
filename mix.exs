@@ -3,7 +3,7 @@ defmodule ProjectStatus.Mixfile do
 
   def project do
     [app: :project_status,
-     version: "0.0.5",
+     version: "0.0.6",
      elixir: "~> 1.1.1",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
