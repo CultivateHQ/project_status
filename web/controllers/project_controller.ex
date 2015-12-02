@@ -30,7 +30,14 @@ defmodule ProjectStatus.ProjectController do
 
   def show(conn, %{"id" => id}) do
     project = Repo.get(Project, id)
-    render(conn, "show.html", project: project)
+    # TEMP
+    if project.trello_project_id do
+      trello_totals = case Trello.sum_points_for_board(project.trello_project_id) do
+                        {:ok, totals} -> totals
+                        _ -> nil
+                      end
+    end
+    render(conn, "show.html", project: project, trello_totals: trello_totals)
   end
 
   def edit(conn, %{"id" => id}) do

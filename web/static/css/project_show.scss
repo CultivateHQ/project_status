@@ -44,3 +44,10 @@ form#new_project_email_recipient {
      margin: 0.5em 0;
    }
 }
+
+table.trello_totals {
+    td, th {
+        padding: 1em;
+        border: 1px solid #eee;
+    }
+}

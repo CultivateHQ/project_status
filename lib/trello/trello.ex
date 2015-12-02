@@ -1,4 +1,7 @@
 defmodule Trello do
+  import Trello.Fetch, only: [fetch: 1]
+  import Trello.Decode, only: [sum_story_points: 1]
+
   def extract_project_id(url) do
     case Regex.named_captures(~r/https:\/\/trello.com\/\w\/(?<trello>.+)\//, url) do
       %{"trello" => project_id} -> {:ok, project_id}
@@ -7,8 +10,9 @@ defmodule Trello do
   end
 
   def sum_points_for_board(board_id) do
-    {:board_lists, board_data} = Trello.Fetch.fetch({:board_lists, board_id})
-    points = Trello.Decode.sum_story_points(board_data)
-    {:ok, points}
+    case fetch({:board_lists, board_id}) do
+      {:board_lists, board_data} -> {:ok, sum_story_points(board_data)}
+      err -> err
+    end
   end
 end
