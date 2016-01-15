@@ -18,7 +18,7 @@ defmodule ProjectStatus.Mixfile do
   def application do
     [mod: {ProjectStatus, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :ueberauth,
+                    :phoenix_ecto, :postgrex, :ueberauth_github,
                     :chronos, :mailgun, :earmark, :exrm, :basic_auth, :httpotion, :jsxn]]
   end
 
