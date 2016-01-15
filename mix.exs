@@ -3,7 +3,7 @@ defmodule ProjectStatus.Mixfile do
 
   def project do
     [app: :project_status,
-     version: "0.0.6",
+     version: "0.0.7",
      elixir: "~> 1.1.1",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
@@ -18,7 +18,7 @@ defmodule ProjectStatus.Mixfile do
   def application do
     [mod: {ProjectStatus, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex,
+                    :phoenix_ecto, :postgrex, :ueberauth,
                     :chronos, :mailgun, :earmark, :exrm, :basic_auth, :httpotion, :jsxn]]
   end
 
@@ -42,6 +42,7 @@ defmodule ProjectStatus.Mixfile do
      {:exrm, "~> 0.19.6"},
      {:basic_auth, "~> 1.0.0"},
      {:mock, ">= 0.0.0"},
+     {:ueberauth_github, "~> 0.2"},
      {:httpotion, ">= 2.1.0" },
      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
      {:jsxn, github: "talentdeficit/jsxn"},]
