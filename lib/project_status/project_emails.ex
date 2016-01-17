@@ -72,7 +72,7 @@ defmodule ProjectStatus.ProjectEmails do
   end
 
 
-  defp do_create_status_email(project_id, params = %{"status_date" => status_date, "content" => content}) do
+  defp do_create_status_email(project_id, %{"status_date" => status_date, "content" => content}) do
     subject = "Status update - #{project_name(project_id)} - #{format_date(status_date)}"
     attributes = %{"project_id" => project_id,
                    "subject" => subject,
@@ -90,7 +90,7 @@ defmodule ProjectStatus.ProjectEmails do
   end
 
   defp get_email_footer(project_id) do
-    case footer = (from p in Project, where: p.id == ^project_id, select: p.email_footer)
+    case (from p in Project, where: p.id == ^project_id, select: p.email_footer)
     |> Repo.one do
       nil -> ""
       footer -> "\n\n" <> footer
