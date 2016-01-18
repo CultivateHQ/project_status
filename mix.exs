@@ -18,7 +18,7 @@ defmodule ProjectStatus.Mixfile do
   def application do
     [mod: {ProjectStatus, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex, :ueberauth_github,
+                    :phoenix_ecto, :postgrex, :ueberauth_github, :guardian,
                     :chronos, :mailgun, :earmark, :exrm, :basic_auth, :httpotion, :jsxn, :connection]]
   end
 
@@ -42,6 +42,7 @@ defmodule ProjectStatus.Mixfile do
      {:exrm, "~> 0.19.6"},
      {:basic_auth, "~> 1.0.0"},
      {:mock, ">= 0.0.0", only: :test},
+     {:guardian, "~> 0.8.0"},
      {:ueberauth_github, "~> 0.2"},
      {:httpotion, ">= 2.1.0" },
      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},

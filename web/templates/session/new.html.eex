@@ -1,0 +1,3 @@
+<h2>Hey</h2>
+<p>Why don't you just go ahead, and log in with Github</p>
+<%= button("Authenticate here!", to: "/auth/github", method: :get) %>

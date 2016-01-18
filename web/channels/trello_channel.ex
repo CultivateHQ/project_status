@@ -1,7 +1,7 @@
 defmodule ProjectStatus.TrelloChannel do
   use ProjectStatus.Web, :channel
 
-  def join("trellos:"<>trello_project_id, payload, socket) do
+  def join("trellos:"<>trello_project_id, _payload, socket) do
     send(self, :read_trellos)
     {:ok, socket |> assign(:trello_project_id, trello_project_id)}
   end
