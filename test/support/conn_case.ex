@@ -27,14 +27,11 @@ defmodule ProjectStatus.ConnCase do
 
       # Import URL helpers from the router
       import ProjectStatus.Router.Helpers
+      import ProjectStatus.AuthorisedConn
 
 
       # The default endpoint for testing
       @endpoint ProjectStatus.Endpoint
-
-      def authorised_conn do
-        conn() |> put_req_header("authorization", ProjectStatus.Credentials.encoded)
-      end
     end
   end
 

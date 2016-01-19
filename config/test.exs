@@ -18,5 +18,10 @@ config :project_status, ProjectStatus.Repo,
   database: "project_status_test",
   pool_size: 1 # Use a single connection for transactional tests
 
+config :guardian, Guardian,
+  issuer: "ProjectStatus",
+  ttl: { 30, :days },
+  secret_key: "JqTPmxSIJfyBhqOiiLap+5vTq7HEHl0HnVl8b7cdskZD/dajdYSnBYnCVHE29ngX",
+  serializer: ProjectStatus.GuardianSerializer
 
 import_config "config.secret.exs"

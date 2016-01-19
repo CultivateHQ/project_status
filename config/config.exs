@@ -22,7 +22,7 @@ config :logger, :console,
 config :basic_auth, realm: 'Project Status', username: 'bob', password: 'unguessable'
 
 config :ueberauth, Ueberauth, providers: [
-  github: {Ueberauth.Strategy.Github, [default_scope: ""]}
+  github: {Ueberauth.Strategy.Github, [default_scope: "read:org"]}
 ]
 
 
