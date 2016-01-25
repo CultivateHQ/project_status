@@ -40,4 +40,4 @@ config :guardian, Guardian,
   secret_key: "JqTPmxSIJfyBhqOiiLap+5vTq7HEHl0HnVl8b7cdskZD/dajdYSnBYnCVHE29ngX",
   serializer: ProjectStatus.GuardianSerializer
 
-import_config "config.secret.exs"
+import_config "config.secret*.exs"
