@@ -3,7 +3,7 @@ defmodule ProjectStatus.Mixfile do
 
   def project do
     [app: :project_status,
-     version: "0.0.8",
+     version: "0.0.9",
      elixir: "~> 1.1.1",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
@@ -19,7 +19,7 @@ defmodule ProjectStatus.Mixfile do
     [mod: {ProjectStatus, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :ueberauth_github, :guardian,
-                    :chronos, :mailgun, :earmark, :exrm, :basic_auth, :httpotion, :jsxn, :connection]]
+                    :chronos, :mailgun, :earmark, :exrm, :httpotion, :jsxn, :connection]]
   end
 
   # Specifies which paths to compile per environment
@@ -40,7 +40,6 @@ defmodule ProjectStatus.Mixfile do
      {:mailgun, "~> 0.1.1"},
      {:earmark, "~> 0.1.17"},
      {:exrm, "~> 0.19.6"},
-     {:basic_auth, "~> 1.0.0"},
      {:mock, ">= 0.0.0", only: :test},
      {:guardian, "~> 0.8.0"},
      {:ueberauth_github, "~> 0.2"},

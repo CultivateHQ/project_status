@@ -8,7 +8,6 @@ defmodule ProjectStatus.AuthorisedConn do
     |> Plug.Session.call(session_opts)
     |> fetch_session()
     |> fetch_flash()
-    |> put_req_header("authorization", ProjectStatus.Credentials.encoded) # remove when we take out basic auth
   end
 
   def authorised_conn do

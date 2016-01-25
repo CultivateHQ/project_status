@@ -19,8 +19,6 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :basic_auth, realm: 'Project Status', username: 'bob', password: 'unguessable'
-
 config :ueberauth, Ueberauth, providers: [
   github: {Ueberauth.Strategy.Github, [default_scope: "read:org"]}
 ]

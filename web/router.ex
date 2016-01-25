@@ -7,7 +7,6 @@ defmodule ProjectStatus.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug BasicAuth, use_config: :basic_auth
     plug Guardian.Plug.VerifySession
     plug Guardian.Plug.LoadResource
   end
