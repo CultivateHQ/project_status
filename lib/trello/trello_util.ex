@@ -1,4 +1,4 @@
-defmodule Trello do
+defmodule ProjectStatus.TrelloUtil do
   import Trello.Fetch, only: [fetch: 1]
   import Trello.Decode, only: [sum_story_points: 1]
 
