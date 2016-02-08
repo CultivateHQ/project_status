@@ -1,6 +1,6 @@
 defmodule ProjectStatus.TrelloChannel do
   use ProjectStatus.Web, :channel
-  alias ProjectStatus.TrelloUtil
+  alias ProjectStatus.Trello
 
   def join("trellos:"<>trello_project_id, _payload, socket) do
     send(self, :read_trellos)
@@ -8,7 +8,7 @@ defmodule ProjectStatus.TrelloChannel do
   end
 
   def handle_info(:read_trellos, socket) do
-    case TrelloUtil.sum_points_for_board(socket.assigns.trello_project_id) do
+    case Trello.sum_points_for_board(socket.assigns.trello_project_id) do
       {:ok, totals} -> push socket, "trello_totals", %{totals: totals |> Enum.map(fn {name, total} -> [name, total] end)}
       {:error, err} -> push socket, "trello_totals_error", %{error: err |> inspect}
     end

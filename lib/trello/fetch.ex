@@ -8,7 +8,7 @@ defmodule Trello.Fetch do
 
   def fetch(command = {request_type, _}, credentials) do
     url(command, credentials)
-    |> HTTPotion.get
+    |> HTTPotion.get # For some reason Trello hates HTTPoison
     |> handle_response(request_type)
   end
 

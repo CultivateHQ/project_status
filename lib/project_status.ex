@@ -11,6 +11,7 @@ defmodule ProjectStatus do
       supervisor(ProjectStatus.Endpoint, []),
       # Start the Ecto repository
       worker(ProjectStatus.Repo, []),
+      worker(ProjectStatus.Trello, []),
       supervisor(ProjectStatus.Mailer.Supervisor, []),
       supervisor(ProjectStatus.ProjectRecipientsSupervisor, []),
       supervisor(ProjectStatus.ProjectEmailsSupervisor, []),
