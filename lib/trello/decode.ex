@@ -6,6 +6,13 @@ defmodule Trello.Decode do
     |> Enum.reverse
   end
 
+  def split_name_into_points_and_name(card_name) do
+    case Regex.named_captures(~r/^\s*\[(?<points>\d+)\](?<rest>.*)/, card_name) do
+      %{"points" => points, "rest" => rest} -> {String.to_integer(points), String.strip(rest)}
+      _ -> {nil, card_name}
+    end
+  end
+
   defp sum_card_story_points(cards) do
     sum_card_story_points(cards, 0)
   end
@@ -19,9 +26,9 @@ defmodule Trello.Decode do
   end
 
   defp points_for_card_name(card_name) do
-    case Regex.named_captures(~r/^\s*\[(?<points>\d+)/, card_name)["points"] do
-      nil -> 0
-      points -> String.to_integer(points)
+    case split_name_into_points_and_name(card_name) do
+      {nil, _} -> 0
+      {points, _} -> points
     end
   end
 end

@@ -1,5 +1,6 @@
 defmodule TrelloDecodeTest do
   use ExUnit.Case
+  import Trello.Decode
 
 @board_list [%{"cards" => [%{"id" => "563af1539a5565452c0b3cda", "name" => "Landing page"},
     %{"id" => "54edc048e430432df9959284",
@@ -29,7 +30,17 @@ defmodule TrelloDecodeTest do
 
 
   test "sums up the story points in each board" do
-     assert [{"Master backlog", 0}, {"To Do", 9}, {"Blocked", 10}] == Trello.Decode.sum_story_points(@board_list)
+     assert [{"Master backlog", 0}, {"To Do", 9}, {"Blocked", 10}] == sum_story_points(@board_list)
   end
 
+  test "split name into points and name" do
+    assert {nil, "bob"} == split_name_into_points_and_name("bob")
+    assert {nil, "[1 bob"} == split_name_into_points_and_name("[1 bob")
+    assert {nil, "[1x] bob"} == split_name_into_points_and_name("[1x] bob")
+
+    assert {1, "bob"} == split_name_into_points_and_name("[1]bob")
+    assert {1, "bob"} == split_name_into_points_and_name("  [1]bob")
+    assert {1, "bob"} == split_name_into_points_and_name("  [1]  bob    ")
+    assert {1, "bob martin"} == split_name_into_points_and_name("  [1]  bob martin   ")
+  end
 end
