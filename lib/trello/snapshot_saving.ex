@@ -14,7 +14,7 @@ defmodule ProjectStatus.Trello.SnapshotSaving do
 
   ## Api
   def save_snapshot(pid, datetime, board_data) do
-    pid |> GenServer.call({:save_snapshot, datetime, board_data})
+    pid |> GenServer.cast({:save_snapshot, datetime, board_data})
   end
 
   def init(project_id) do
@@ -23,14 +23,14 @@ defmodule ProjectStatus.Trello.SnapshotSaving do
 
   ## Callbacks
 
-  def handle_call({:save_snapshot, datetime, board_data}, _from, project_id) do
+  def handle_cast({:save_snapshot, datetime, board_data}, project_id) do
     Repo.transaction(fn ->
       %{id: snapshot_id} = save_tracker_snapshot(datetime, project_id)
 
       for column <- board_data, do: save_column(column, snapshot_id)
 
     end)
-    {:reply, :ok, project_id}
+    {:noreply, project_id}
   end
 
   defp save_tracker_snapshot(datetime, project_id) do
