@@ -20,8 +20,17 @@ defmodule ProjectStatus.Trello do
      @name |> GenServer.call({:sum_points_for_board, board_id})
   end
 
+  def fetch_board_lists(board_id) do
+    @name |> GenServer.call({:fetch, {:board_lists, board_id}})
+  end
+
 
   ## GenServer
+
+  def handle_call({:fetch, command = {command_type, _id}}, _from, state) do
+    {command_type, results} = fetch(command)
+    {:reply, {:ok, results}, state}
+  end
 
   def handle_call({:sum_points_for_board, board_id}, _from, state) do
     reply = case fetch({:board_lists, board_id}) do
