@@ -28,7 +28,7 @@ defmodule ProjectStatus.Trello do
   ## GenServer
 
   def handle_call({:fetch, command = {command_type, _id}}, _from, state) do
-    {command_type, results} = fetch(command)
+    {^command_type, results} = fetch(command)
     {:reply, {:ok, results}, state}
   end
 
