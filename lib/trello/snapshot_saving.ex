@@ -8,29 +8,37 @@ defmodule ProjectStatus.Trello.SnapshotSaving do
   alias ProjectStatus.TrackerSnapshotStoryStatus
   alias ProjectStatus.TrackerStorySnapshot
 
-  def start_link(project_id, opts \\ []) do
-    GenServer.start_link(__MODULE__, project_id, opts)
+  def start_link(project_id, last_snapshot_datetime, opts \\ []) do
+    GenServer.start_link(__MODULE__, {project_id, last_snapshot_datetime}, opts)
   end
 
   ## Api
-  def save_snapshot(pid, datetime, board_data) do
-    pid |> GenServer.cast({:save_snapshot, datetime, board_data})
+  def save_snapshot(pid, board_data, datetime) do
+    pid |> GenServer.cast({:save_snapshot, board_data, datetime})
   end
 
-  def init(project_id) do
-    {:ok, project_id}
+  def last_snapshot_datetime(pid) do
+    pid |> GenServer.call(:last_snapshot_datetime)
+  end
+
+  def init(state) do
+    {:ok, state}
   end
 
   ## Callbacks
 
-  def handle_cast({:save_snapshot, datetime, board_data}, project_id) do
+  def handle_cast({:save_snapshot, datetime, board_data}, {project_id, _}) do
     Repo.transaction(fn ->
       %{id: snapshot_id} = save_tracker_snapshot(datetime, project_id)
 
       for column <- board_data, do: save_column(column, snapshot_id)
 
     end)
-    {:noreply, project_id}
+    {:noreply, {project_id, datetime}}
+  end
+
+  def handle_call(:last_snapshot_datetime, _from, state = {_, last_snapshot_datetime}) do
+    {:reply, last_snapshot_datetime, state}
   end
 
   defp save_tracker_snapshot(datetime, project_id) do

@@ -8,6 +8,7 @@ defmodule Trello.SnapshotSavingTest do
   alias ProjectStatus.TrackerStorySnapshot
   alias ProjectStatus.Trello.SnapshotSaving
 
+  @initial_snapshot_date {{2015, 11, 14}, {15, 32, 11}}
   @snapshot_date {{2015, 11, 15}, {15, 32, 11}}
 
   @board_list [%{"cards" => [%{"id" => "card1_id", "name" => "[2] Landing page"}],
@@ -23,20 +24,33 @@ defmodule Trello.SnapshotSavingTest do
                  "name" => "Blocked", "pos" => 131071, "subscribed" => false}]
 
 
-
-  setup do
+  setup context do
     project = %Project{name: "bob"} |> Repo.insert!
-    {:ok, pid} = SnapshotSaving.start_link(project.id)
-    pid |> SnapshotSaving.save_snapshot(@snapshot_date, @board_list)
-    {:ok, %{project: project}}
+    {:ok, pid} = SnapshotSaving.start_link(project.id, @initial_snapshot_date)
+
+    if context[:save_snapshot] do
+      pid |> SnapshotSaving.save_snapshot(@snapshot_date, @board_list)
+    end
+    {:ok, %{project: project, pid: pid}}
   end
 
+  test "initial datetime is set", %{pid: pid} do
+    assert @initial_snapshot_date == pid |> SnapshotSaving.last_snapshot_datetime
+  end
+
+  @tag :save_snapshot
   test "snapshot record saved", %{project: %{id: project_id}} do
     snapshot = Repo.one!(TrackerSnapshot)
     assert snapshot.project_id == project_id
     assert snapshot.snapshot_datetime |> Ecto.DateTime.to_erl == @snapshot_date
   end
 
+  @tag :save_snapshot
+  test "last_snapshot_datetime is updated", %{pid: pid} do
+    assert @snapshot_date == pid |> SnapshotSaving.last_snapshot_datetime
+  end
+
+  @tag :save_snapshot
   test "trello columns saved as tracker status" do
     tracker_status = (
       from c in TrackerSnapshotStoryStatus,
@@ -55,6 +69,7 @@ defmodule Trello.SnapshotSavingTest do
     |> Enum.sort
   end
 
+  @tag :save_snapshot
   test "cards saved against tracker status (ie columns)" do
     card_counts = TrackerStorySnapshot
     |> group_by([c], c.tracker_snapshot_story_status_id)
