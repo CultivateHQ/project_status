@@ -6,7 +6,7 @@ defmodule ProjectStatus.Trello.ProjectSnapshot do
 
   @snapshot_at {3, 30, 0}
 
-  def start_link(project_id, trello_board_id, last_snapshot_datetime \\ nil, opts \\ []) do
+  def start_link(project_id, trello_board_id, last_snapshot_datetime, opts \\ []) do
     GenServer.start_link(__MODULE__, {project_id, trello_board_id, last_snapshot_datetime}, opts)
   end
 

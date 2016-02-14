@@ -9,5 +9,9 @@ defmodule ProjectStatus.ProjectEmailsSupervisor do
       worker(ProjectStatus.ProjectEmails, [], restart: :temporary)
     ]
     supervise(children, strategy: :simple_one_for_one)
-  end 
+  end
+
+  def start_project_snapshot(project_id, trello_board_id, last_snapshot_datetime \\ nil) do
+    Supervisor.start_child(__MODULE__, [project_id, trello_board_id, last_snapshot_datetime])
+  end
 end
