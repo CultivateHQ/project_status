@@ -24,4 +24,25 @@ defmodule ProjectStatus.Trello.TrelloProjects do
 end
 
 defmodule ProjectStatus.Trello.ProjectSnapshotManager do
+  use GenServer
+  import ProjectStatus.Trello.TrelloProjects, only: [projects_and_last_snapshots: 0]
+
+  def start_link do
+    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def init(state) do
+    send(self, :load_snapshots)
+    {:ok, state}
+  end
+
+  ## Callbacks
+
+  def handle_info(:load_snapshots, state) do
+    projects_and_last_snapshots |> Enum.each(fn project ->
+      Supervisor.start_child(ProjectStatus.Trello.SnapshotSavingSupervisor,
+                             [project.id, project.trello_board_id, project.snapshot_datetime])
+    end)
+    {:noreply, state}
+  end
 end
