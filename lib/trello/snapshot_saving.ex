@@ -21,6 +21,10 @@ defmodule ProjectStatus.Trello.SnapshotSaving do
     pid |> GenServer.call(:last_snapshot_datetime)
   end
 
+  def project_id(pid) do
+    pid |> GenServer.call(:project_id)
+  end
+
   def init(state) do
     {:ok, state}
   end
@@ -39,6 +43,10 @@ defmodule ProjectStatus.Trello.SnapshotSaving do
 
   def handle_call(:last_snapshot_datetime, _from, state = {_, last_snapshot_datetime}) do
     {:reply, last_snapshot_datetime, state}
+  end
+
+  def handle_call(:project_id, _from, state = {project_id, _}) do
+    {:reply, project_id, state}
   end
 
   defp save_tracker_snapshot(datetime, project_id) do

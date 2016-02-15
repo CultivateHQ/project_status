@@ -11,6 +11,8 @@ defmodule ProjectStatus.Trello.ProjectSnapshot do
   end
 
   def init({project_id, trello_board_id, last_snapshot_datetime}) do
+    Logger.info("Starting Trello snapshot monitoring for project #{project_id}")
+
     {:ok, saving_pid} = SnapshotSaving.start_link(project_id, last_snapshot_datetime)
     set_timer_for_next_poll
     {:ok, {trello_board_id, saving_pid}}
@@ -28,6 +30,8 @@ defmodule ProjectStatus.Trello.ProjectSnapshot do
 
   ## Callbacks
   def handle_cast(:take_snapshot, state = {trello_board_id, saving_pid }) do
+    Logger.info("Taking Trello snapshot for project #{saving_pid |> SnapshotSaving.project_id}")
+
     take_snapshot(trello_board_id, saving_pid)
     {:noreply, state}
   end
