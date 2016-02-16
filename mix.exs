@@ -19,7 +19,7 @@ defmodule ProjectStatus.Mixfile do
     [mod: {ProjectStatus, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
                     :phoenix_ecto, :postgrex, :ueberauth_github, :guardian,
-                    :chronos, :mailgun, :earmark, :exrm, :httpotion, :connection]]
+                    :chronos, :mailgun, :earmark, :exrm, :httpotion, :connection, :honeybadger]]
   end
 
   # Specifies which paths to compile per environment
@@ -45,6 +45,7 @@ defmodule ProjectStatus.Mixfile do
      {:ueberauth_github, "~> 0.2"},
      {:httpotion, ">= 2.1.0" },
      {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
+     {:honeybadger, "~> 0.1"}
      ]
   end
 end

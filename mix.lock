@@ -16,6 +16,7 @@
   "getopt": {:hex, :getopt, "0.8.2"},
   "guardian": {:hex, :guardian, "0.8.1"},
   "hackney": {:hex, :hackney, "1.4.8"},
+  "honeybadger": {:hex, :honeybadger, "0.3.1"},
   "httpoison": {:hex, :httpoison, "0.8.0"},
   "httpotion": {:hex, :httpotion, "2.1.0"},
   "ibrowse": {:git, "https://github.com/cmullaparthi/ibrowse.git", "ea3305d21f37eced4fac290f64b068e56df7de80", [tag: "v4.1.2"]},

@@ -1,5 +1,6 @@
 defmodule ProjectStatus.Router do
   use ProjectStatus.Web, :router
+  use Honeybadger.Plug
 
   pipeline :browser do
     plug :accepts, ["html"]
