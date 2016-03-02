@@ -25,9 +25,13 @@
   <fieldset>
     <textarea id="new_status_email_content"></textarea>
   </fieldset>
-  <h3>Pre-canned footer</h3>
-  <p><%= @project.email_footer %></p>
-  <input type="submit" value="Send Email" class="btn btn-primary">
+
+  <%= if @project.email_footer do %>
+    <h3>Pre-canned footer</h3>
+    <p><%= @project.email_footer %></p>
+  <% end %>
+
+  <input type="submit" value="Send Email" class="btn btn-primary btn-lg">
 </form>
 
 <h3>Preview</h3>
