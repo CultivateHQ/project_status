@@ -1,0 +1,33 @@
+#new_project_email_recipient {
+  background-color: #eee;
+  padding: 0.5em 1em 0;
+
+  label {
+    display: block;
+  }
+
+  input[type="text"] {
+    width: 100%;
+  }
+
+  .btn-primary {
+    margin-top: 1.7em;
+  }
+}
+
+
+#recipient_list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    background-color: #FAFAF8;
+    margin: 0.5em 0;
+    padding: 0.5em 1em;
+
+    .btn {
+      float: right;
+    }
+  }
+}

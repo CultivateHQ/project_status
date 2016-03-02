@@ -3,7 +3,7 @@ form#new_status_email{
     margin: 1em 0;
   }
   textarea {
-    width: 40em;
+    width: 100%;
     height: 20em;
   }
 }
@@ -25,24 +25,6 @@ form#new_project_email_recipient, form#new_status_email{
 #status_email_content_preview {
   padding: 1em;
   border: dashed 1px lightpink;
-}
-
-
-form#new_project_email_recipient {
-  fieldset {
-    width: 24em;
-  }
-}
-
- 
-#email_recipients ul#recipient_list {
-   li {
-     .recipient {
-      width: 20em;
-      display: inline-block;
-     }
-     margin: 0.5em 0;
-   }
 }
 
 table#trello_totals {
