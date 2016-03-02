@@ -4,6 +4,40 @@ Aimed to automate project status updates and tracking. Step 1, sending out the d
 
 It is currently deployed to a Digital Ocean. VMARGS
 
+## Setup
+
+### Fetch dependencies
+
+```bash
+  mix deps.get
+  npm install
+```
+
+### Setup the database
+
+The `dev.exs` and `test.exs` files have the username and password configuration commented out. For convenience, you
+can copy the `secret.exs` file and update to reflect your own machine's configuration.
+
+```bash
+  cp config/secret.exs.example config/secret.exs
+```
+
+Create the schema and migrate.
+
+```bash
+  mix ecto.create
+  mix ecto.migrate
+```
+
+### Setup API keys/tokens
+
+In order for things to work, you'll need to update your `secrets.exs` to include config for trello, github oauth, and honeybadger.
+
+### Run application
+
+```bash
+  mix phoenix.server
+```
 
 ## Deployment
 
