@@ -14,14 +14,22 @@
   </head>
 
   <body>
-    <div class="container" role="main">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="/">Projects</a></li>
-          <li><a href="http://www.phoenixframework.org/docs">Here's a link to Phoenix, just for fun</a></li>
-          <li><%= button("Sign out", to: session_path(@conn, :delete), method: :delete ) %></li>
-        </ul>
+
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Project Status</a>
+        </div>
+
+        <%= if Guardian.Plug.current_token(@conn) do %>
+          <div class="navbar-right">
+            <%= button("Sign out", to: session_path(@conn, :delete), method: :delete, class: "btn navbar-btn btn-default") %>
+          </div>
+        <% end %>
       </div>
+    </nav>
+
+    <div class="container" role="main">
       <p id="flashed">&nbsp;</p>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

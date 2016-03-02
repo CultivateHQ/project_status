@@ -15,7 +15,7 @@
     <ul class="errors"></ul>
     <fieldset>
       <label for="new_status_email_status_date">Status date:</label>
-      <select id="new_status_email_status_date">
+      <select id="new_status_email_status_date" class="form-control">
         <%= for {{year,month,day}, formatted_date, selected} <- ProjectStatus.StatusEmailDates.dates do %>
            <option value="<%= "#{year}-#{month}-#{day}" %>" <%= selected %>><%= formatted_date %></option>
         <% end %>
