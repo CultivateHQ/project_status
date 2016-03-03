@@ -1,24 +1,11 @@
 <h2>Projects</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
 <%= for project <- @projects do %>
-    <tr>
-      <td><%= project.name %></td>
-
-      <td class="text-right">
-        <%= link "Show", to: project_path(@conn, :show, project), class: "btn btn-default btn-xs" %>
-      </td>
-    </tr>
+  <div class="project">
+    <%= link project.name, to: project_path(@conn, :show, project) %>
+  </div>
 <% end %>
-  </tbody>
-</table>
 
-<%= link "New project", to: project_path(@conn, :new) %>
+<div class="project">
+  <%= link "Create new project", to: project_path(@conn, :new), class: "add" %>
+</div>
