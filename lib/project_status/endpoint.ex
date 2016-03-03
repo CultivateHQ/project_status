@@ -9,7 +9,7 @@ defmodule ProjectStatus.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/", from: :project_status, gzip: false,
-    only: ~w(css images js favicon.ico robots.txt)
+    only: ~w(css images js favicon.ico robots.txt fonts)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
