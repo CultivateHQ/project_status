@@ -30,6 +30,7 @@ defmodule Trello.SnapshotSavingTest do
 
     if context[:save_snapshot] do
       pid |> SnapshotSaving.save_snapshot(@snapshot_date, @board_list)
+      :timer.sleep 1
     end
     {:ok, %{project: project, pid: pid}}
   end
