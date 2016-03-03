@@ -9,7 +9,7 @@
     </select>
   </fieldset>
 
-  <div class="editor">
+  <div class="new_email_form">
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#write" aria-controls="write" role="tab" data-toggle="tab">Write</a></li>
       <li role="presentation"><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview</a></li>
@@ -32,6 +32,8 @@
       </div>
     </div>
 
-    <input type="submit" value="Send Email" class="btn btn-primary btn-lg">
+    <div class="text-right">
+      <input type="submit" value="Send Email" class="btn btn-primary btn-lg">
+    </div>
   </div>
 </form>

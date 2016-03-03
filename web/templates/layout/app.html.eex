@@ -30,8 +30,7 @@
     </nav>
 
     <div class="container" role="main">
-      <p id="flashed">&nbsp;</p>
-
+      <p id="flashed"></p>
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 

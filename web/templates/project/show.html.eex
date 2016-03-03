@@ -1,3 +1,5 @@
+<%= link "Back", to: project_path(@conn, :index) %>
+
 <div id="project" data-project-id="<%= @project.id %>" data-trello-project-id="<%= @project.trello_project_id %>">
   <h2><%= @project.name %></h2>
 
@@ -5,40 +7,32 @@
       <p><%= link "Go to Trello board", to: "https://trello.com/b/#{@project.trello_project_id}", target: "trello" %>
   <% end %>
 
-  <h3>Trello stats</h3>
-  <table id="trello_totals">
-    <thead></thead>
-    <tbody></tbody>
-  </table>
+  <div>
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#compose" aria-controls="compose" role="tab" data-toggle="tab">Compose</a></li>
+      <li role="presentation"><a href="#recipients" aria-controls="recipients" role="tab" data-toggle="tab">Recipients</a></li>
+      <li role="presentation"><a href="#previous_emails" aria-controls="previous_emails" role="tab" data-toggle="tab">Previous emails</a></li>
+    </ul>
 
-  <h3>New status email</h3>
-  <%= render "_new_email_form.html", project: @project %>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="compose">
+        <h3>Trello stats</h3>
+        <table id="trello_totals">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
 
-  <h3>Recipients</h3>
-  <div id="email_recipients">
-    <ul id="recipient_list"></ul>
-    <p>
-      <form id="new_project_email_recipient" action="#">
-        <div class="row">
-          <div class="col-xs-5 form-group">
-            <label for="project_email_recipient_name">Name</label>
-            <input type="text" id="project_email_recipient_name">
-          </div>
-          <div class="col-xs-5 form-group">
-            <label for="project_email_recipient_email">Email Address</label>
-            <input type="text" id="project_email_recipient_email">
-          </div>
-          <div class="col-xs-2 form-group">
-            <input type="submit" value="Add recipient" class="btn btn-sm btn-primary">
-          </div>
-        </div>
-
-        <ul class="errors"></ul>
-      </form>
-    </p>
+        <h3>New status email</h3>
+        <%= render "_new_email_form.html", project: @project %>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="recipients">
+        <h3>Recipients</h3>
+        <%= render "_email_recipients.html" %>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="previous_emails">
+        <h3>Previously sent emails</h3>
+        <ul id="sent_status_emails"></ul>
+      </div>
+    </div>
   </div>
-
-  <h3>Previously sent emails</h3>
-  <ul id="sent_status_emails"></ul>
-  <%= link "Back", to: project_path(@conn, :index) %>
 </div>

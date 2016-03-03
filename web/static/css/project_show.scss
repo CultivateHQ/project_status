@@ -1,13 +1,3 @@
-form#new_status_email{
-  fieldset {
-    margin: 1em 0;
-  }
-  textarea {
-    width: 100%;
-    height: 20em;
-  }
-}
-
 form#new_project_email_recipient, form#new_status_email{
     .errors {
       color: red;
@@ -20,11 +10,6 @@ form#new_project_email_recipient, form#new_status_email{
   .submitting input, #recipient_list .submitting {
     border: dashed 5px pink;
   }
-}
-
-#status_email_content_preview {
-  padding: 1em;
-  border: dashed 1px lightpink;
 }
 
 table#trello_totals {
