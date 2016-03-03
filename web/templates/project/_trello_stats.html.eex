@@ -1,0 +1,6 @@
+<div class="trello-stats">
+  <table id="trello_totals">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
+</div>

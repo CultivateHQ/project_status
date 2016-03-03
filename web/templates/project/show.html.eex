@@ -20,10 +20,7 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="compose">
         <h3>Trello stats</h3>
-        <table id="trello_totals">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
+        <%= render "_trello_stats.html" %>
 
         <h3>New status email</h3>
         <%= render "_new_email_form.html", project: @project %>
