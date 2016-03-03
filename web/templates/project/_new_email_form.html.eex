@@ -1,0 +1,37 @@
+<form id="new_status_email">
+  <ul class="errors"></ul>
+  <fieldset>
+    <label for="new_status_email_status_date">Status date:</label>
+    <select id="new_status_email_status_date" class="form-control">
+      <%= for {{year,month,day}, formatted_date, selected} <- ProjectStatus.StatusEmailDates.dates do %>
+         <option value="<%= "#{year}-#{month}-#{day}" %>" <%= selected %>><%= formatted_date %></option>
+      <% end %>
+    </select>
+  </fieldset>
+
+  <div class="editor">
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#write" aria-controls="write" role="tab" data-toggle="tab">Write</a></li>
+      <li role="presentation"><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="write">
+        <fieldset>
+          <textarea id="new_status_email_content"></textarea>
+        </fieldset>
+
+        <%= if @project.email_footer do %>
+          <h3>Pre-canned footer</h3>
+          <p><%= @project.email_footer %></p>
+        <% end %>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="preview">
+        <div id="status_email_content_preview"></div>
+      </div>
+    </div>
+
+    <input type="submit" value="Send Email" class="btn btn-primary btn-lg">
+  </div>
+</form>

@@ -1,42 +1,19 @@
 <div id="project" data-project-id="<%= @project.id %>" data-trello-project-id="<%= @project.trello_project_id %>">
   <h2><%= @project.name %></h2>
 
-  <h3>New status email</h3>
   <%= if @project.trello_project_id do %>
       <p><%= link "Go to Trello board", to: "https://trello.com/b/#{@project.trello_project_id}", target: "trello" %>
   <% end %>
 
+  <h3>Trello stats</h3>
   <table id="trello_totals">
     <thead></thead>
     <tbody></tbody>
   </table>
 
-  <form id="new_status_email">
-    <ul class="errors"></ul>
-    <fieldset>
-      <label for="new_status_email_status_date">Status date:</label>
-      <select id="new_status_email_status_date" class="form-control">
-        <%= for {{year,month,day}, formatted_date, selected} <- ProjectStatus.StatusEmailDates.dates do %>
-           <option value="<%= "#{year}-#{month}-#{day}" %>" <%= selected %>><%= formatted_date %></option>
-        <% end %>
-      </select>
-    </fieldset>
-    <h3>Message</h3>
-    <fieldset>
-      <textarea id="new_status_email_content"></textarea>
-    </fieldset>
+  <h3>New status email</h3>
+  <%= render "_new_email_form.html", project: @project %>
 
-    <%= if @project.email_footer do %>
-      <h3>Pre-canned footer</h3>
-      <p><%= @project.email_footer %></p>
-    <% end %>
-
-    <input type="submit" value="Send Email" class="btn btn-primary btn-lg">
-  </form>
-
-  <h3>Preview</h3>
-  <div id="status_email_content_preview">
-  </div>
   <h3>Recipients</h3>
   <div id="email_recipients">
     <ul id="recipient_list"></ul>
