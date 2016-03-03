@@ -23,7 +23,8 @@
 
         <%= if Guardian.Plug.current_token(@conn) do %>
           <div class="navbar-right">
-            <%= button("Sign out", to: session_path(@conn, :delete), method: :delete, class: "btn navbar-btn btn-default") %>
+            <%= link(raw("<i class=\"fa fa-sign-out\"></i> Sign out"), to: session_path(@conn, :delete),
+                  method: :delete, class: "btn navbar-btn btn-default") %>
           </div>
         <% end %>
       </div>
