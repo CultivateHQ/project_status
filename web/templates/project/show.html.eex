@@ -1,7 +1,9 @@
-<%= link "Back", to: project_path(@conn, :index) %>
-
 <div id="project" data-project-id="<%= @project.id %>" data-trello-project-id="<%= @project.trello_project_id %>">
-  <h2><%= @project.name %></h2>
+  <h2>
+    <%= link "Projects", to: project_path(@conn, :index) %>
+    <span class="divider">&rsaquo;</span>
+    <%= @project.name %>
+  </h2>
 
   <%= if @project.trello_project_id do %>
       <p><%= link "Go to Trello board", to: "https://trello.com/b/#{@project.trello_project_id}", target: "trello" %>
