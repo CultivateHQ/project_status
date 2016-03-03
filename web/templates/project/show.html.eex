@@ -6,7 +6,9 @@
   </h2>
 
   <%= if @project.trello_project_id do %>
-      <p><%= link "Go to Trello board", to: "https://trello.com/b/#{@project.trello_project_id}", target: "trello" %>
+    <%= link raw("<i class=\"fa fa-trello\"></i> Go to Trello board"),
+          to: "https://trello.com/b/#{@project.trello_project_id}",
+          target: "trello" %>
   <% end %>
 
   <div>
