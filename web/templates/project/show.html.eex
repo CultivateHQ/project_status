@@ -14,6 +14,7 @@
       <li role="presentation" class="active"><a href="#compose" aria-controls="compose" role="tab" data-toggle="tab">Compose</a></li>
       <li role="presentation"><a href="#recipients" aria-controls="recipients" role="tab" data-toggle="tab">Recipients</a></li>
       <li role="presentation"><a href="#previous_emails" aria-controls="previous_emails" role="tab" data-toggle="tab">Previous emails</a></li>
+      <li role="presentation"><a href="#edit_delete" aria-controls="edit_delete" role="tab" data-toggle="tab">Edit / Delete</a></li>
     </ul>
 
     <div class="tab-content">
@@ -27,13 +28,34 @@
         <h3>New status email</h3>
         <%= render "_new_email_form.html", project: @project %>
       </div>
+
       <div role="tabpanel" class="tab-pane" id="recipients">
         <h3>Recipients</h3>
         <%= render "_email_recipients.html" %>
       </div>
+
       <div role="tabpanel" class="tab-pane" id="previous_emails">
         <h3>Previously sent emails</h3>
         <ul id="sent_status_emails"></ul>
+      </div>
+
+      <div role="tabpanel" class="tab-pane" id="edit_delete">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Edit the project</h3>
+            <p>
+              Update the project name, trello board, or footer content that appears at the bottom of emails.
+            </p>
+            <%= link "Edit", to: project_path(@conn, :edit, @project), class: "btn btn-default" %>
+          </div>
+          <div class="col-md-6">
+            <h3>Delete the project</h3>
+            <p>
+              This will <strong>permenantly</strong> remove all content for this project from Project Status.
+            </p>
+            <%= link "Delete", to: project_path(@conn, :delete, @project), method: :delete, class: "btn btn-danger" %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
