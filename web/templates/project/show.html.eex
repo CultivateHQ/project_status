@@ -5,18 +5,20 @@
     <%= @project.name %>
   </h2>
 
-  <%= if @project.trello_project_id do %>
-    <%= link raw("<i class=\"fa fa-trello\"></i> Go to Trello board"),
-          to: "https://trello.com/b/#{@project.trello_project_id}",
-          target: "trello" %>
-  <% end %>
-
   <div>
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="active"><a href="#compose" aria-controls="compose" role="tab" data-toggle="tab">Compose</a></li>
       <li role="presentation"><a href="#recipients" aria-controls="recipients" role="tab" data-toggle="tab">Recipients</a></li>
       <li role="presentation"><a href="#previous_emails" aria-controls="previous_emails" role="tab" data-toggle="tab">Previous emails</a></li>
       <li role="presentation"><a href="#edit_delete" aria-controls="edit_delete" role="tab" data-toggle="tab">Edit / Delete</a></li>
+
+      <li class="nav-right">
+  <%= if @project.trello_project_id do %>
+    <%= link raw("<i class=\"fa fa-trello\"></i> Go to Trello board"),
+          to: "https://trello.com/b/#{@project.trello_project_id}",
+          target: "trello" %>
+  <% end %>
+  </li>
     </ul>
 
     <div class="tab-content">

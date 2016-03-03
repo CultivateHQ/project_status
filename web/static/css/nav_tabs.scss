@@ -1,0 +1,15 @@
+.nav-tabs {
+  .nav-right {
+    float: right;
+
+    a {
+      &:hover {
+        background: none;
+        border-top-color: #FFF;
+        border-left-color: #FFF;
+        border-right-color: #FFF;
+        text-decoration: underline;
+      }
+    }
+  }
+}
