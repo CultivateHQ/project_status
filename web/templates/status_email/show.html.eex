@@ -1,5 +1,14 @@
+<h2>
+  <%= link "Projects", to: project_path(@conn, :index) %>
+  <span class="divider">&rsaquo;</span>
+  <%= link @project.name, to: project_path(@conn, :show, @project) %>
+  <span class="divider">&rsaquo;</span>
+  Previous emails
+</h2>
+
+<hr>
+
 <div>
   <p><%= @status_email.subject %></p>
   <p><%= {:safe, @status_email.content |> Earmark.to_html} %></p>
-<%= link "Back", to: project_path(@conn, :show, @project_id) %>
 </div>
