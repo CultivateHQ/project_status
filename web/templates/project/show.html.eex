@@ -7,10 +7,26 @@
 
   <div>
     <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active"><a href="#compose" aria-controls="compose" role="tab" data-toggle="tab">Compose</a></li>
-      <li role="presentation"><a href="#recipients" aria-controls="recipients" role="tab" data-toggle="tab">Recipients</a></li>
-      <li role="presentation"><a href="#previous_emails" aria-controls="previous_emails" role="tab" data-toggle="tab">Previous emails</a></li>
-      <li role="presentation"><a href="#edit_delete" aria-controls="edit_delete" role="tab" data-toggle="tab">Edit / Delete</a></li>
+      <li role="presentation" class="active">
+        <a href="#compose" aria-controls="compose" role="tab" data-toggle="tab">
+          <i class="fa fa-pencil"></i> Compose
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#recipients" aria-controls="recipients" role="tab" data-toggle="tab">
+          <i class="fa fa-users"></i> Recipients
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#previous_emails" aria-controls="previous_emails" role="tab" data-toggle="tab">
+          <i class="fa fa-envelope"></i> Previous emails
+        </a>
+      </li>
+      <li role="presentation">
+        <a href="#edit_delete" aria-controls="edit_delete" role="tab" data-toggle="tab">
+          <i class="fa fa-cogs"></i> Edit / Delete
+        </a>
+      </li>
 
       <li class="nav-right">
   <%= if @project.trello_project_id do %>
@@ -49,14 +65,14 @@
             <p>
               Update the project name, trello board, or footer content that appears at the bottom of emails.
             </p>
-            <%= link "Edit", to: project_path(@conn, :edit, @project), class: "btn btn-default" %>
+            <%= link raw("<i class=\"fa fa-cogs\"></i> Edit"), to: project_path(@conn, :edit, @project), class: "btn btn-default" %>
           </div>
           <div class="col-md-6">
             <h3>Delete the project</h3>
             <p>
               This will <strong>permenantly</strong> remove all content for this project from Project Status.
             </p>
-            <%= link "Delete", to: project_path(@conn, :delete, @project), method: :delete, class: "btn btn-danger" %>
+            <%= link raw("<i class=\"fa fa-trash-o\"></i> Delete"), to: project_path(@conn, :delete, @project), method: :delete, class: "btn btn-danger" %>
           </div>
         </div>
       </div>

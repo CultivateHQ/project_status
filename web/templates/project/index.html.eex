@@ -7,5 +7,5 @@
 <% end %>
 
 <div class="project">
-  <%= link "Create new project", to: project_path(@conn, :new), class: "add" %>
+  <%= link raw("<i class=\"fa fa-plus\"></i> Create new project"), to: project_path(@conn, :new), class: "add" %>
 </div>
