@@ -1,3 +1,15 @@
-<h2>Hey</h2>
-<p>Why don't you just go ahead, and log in with Github</p>
-<%= button("Authenticate here!", to: "/auth/github", method: :get, class: "btn btn-primary btn-lg") %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Sign In</h3>
+      </div>
+      <div class="panel-body text-center">
+        <p>In order to access Project Status, you need to be signed in.</p>
+
+        <%= link(raw("<i class=\"fa fa-github\"></i> Authenticate with GitHub"),
+              to: "/auth/github", class: "btn btn-primary btn-lg") %>
+      </div>
+    </div>
+  </div>
+</div>
