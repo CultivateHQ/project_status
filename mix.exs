@@ -39,7 +39,7 @@ defmodule ProjectStatus.Mixfile do
      {:chronos, "~> 1.4.0"},
      {:mailgun, "~> 0.1.1"},
      {:earmark, "~> 0.1.17"},
-     {:exrm, "~> 0.19.6"},
+     {:exrm, "~> 1.0"},
      {:mock, ">= 0.0.0", only: :test},
      {:guardian, "~> 0.8.0"},
      {:ueberauth_github, "~> 0.2"},
