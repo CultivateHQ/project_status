@@ -33,7 +33,7 @@ function addRecipientToDisplay(emailRecipient){
                                  `data-email-recipient-id="${emailRecipient.id}">` +
                                  'Delete</a>' +
                                  '</li>')
-    bindDeleteButtons(recipientsContainer().find("li:last"))
+    bindDeleteButtons(recipientsContainer().find(".delete_recipient"))
 }
 
 
