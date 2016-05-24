@@ -38,7 +38,7 @@ function addRecipientToDisplay(emailRecipient){
 
 
 function formFieldSetContainer(){
-    return $('#new_project_email_recipient fieldset')
+    return $('#new_project_email_recipient')
 }
 
 function indicateSubmissionStarted(){
@@ -80,7 +80,7 @@ function indicateTimeout(){
 }
 
 function clearForm(){
-    $('#new_project_email_recipient fieldset input').val("")
+    $('#new_project_email_recipient input[type="text"]').val("")
 }
 
 
