@@ -2,14 +2,14 @@ form#new_project_email_recipient, form#new_status_email{
     .errors {
       color: red;
     }
-  fieldset{
     &.errored{
       border: solid 2px red;
-    }
   }
-  .submitting input, #recipient_list .submitting {
-    border: dashed 5px pink;
-  }
+}
+
+form#new_project_email_recipient.submitting {
+    border: 1px cyan dashed;
+    background: #eee;
 }
 
 .divider {
