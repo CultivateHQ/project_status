@@ -16,7 +16,7 @@ defmodule ProjectStatus do
       supervisor(ProjectStatus.ProjectRecipientsSupervisor, []),
       supervisor(ProjectStatus.ProjectEmailsSupervisor, []),
       supervisor(ProjectStatus.Trello.SnapshotSavingSupervisor, []),
-      worker(ProjectStatus.Trello.ProjectSnapshotManager, []),
+      # worker(ProjectStatus.Trello.ProjectSnapshotManager, []),
       # Here you could define other workers and supervisors as children
       # worker(ProjectStatus.Worker, [arg1, arg2, arg3]),
     ]
