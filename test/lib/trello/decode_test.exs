@@ -30,7 +30,10 @@ defmodule TrelloDecodeTest do
 
 
   test "sums up the story points in each board" do
-     assert [{"Master backlog", 0}, {"To Do", 9}, {"Blocked", 10}] == sum_story_points(@board_list)
+  assert [{"Master backlog", 0, "55cdb982dda23d6d2914fcf2"},
+          {"To Do", 9, "54edbf13a590ea1f0d47a523"},
+          {"Blocked", 10, "54ef1a0b792ce91b05c59de1"}
+         ] == sum_story_points(@board_list)
   end
 
   test "split name into points and name" do

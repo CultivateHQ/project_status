@@ -1,8 +1,7 @@
 defmodule ProjectStatus.Project do
+
   use ProjectStatus.Web, :model
-  alias ProjectStatus.EmailRecipient
-  alias ProjectStatus.StatusEmail
-  alias ProjectStatus.TrackerSnapshot
+  alias ProjectStatus.{EmailRecipient, StatusEmail, TrackerSnapshot, ProjectStoryStatus}
 
   schema "projects" do
     field :name, :string
@@ -12,6 +11,7 @@ defmodule ProjectStatus.Project do
     has_many :email_recipients, EmailRecipient
     has_many :status_emails, StatusEmail
     has_many :tracker_snapshots, TrackerSnapshot
+    has_many :project_story_statuses, ProjectStoryStatus
     timestamps
   end
 

@@ -28,7 +28,7 @@ function populateTrelloTotals(totals) {
     let headers = ""
     let row = "<tr>"
     totals.forEach(total => {
-        headers += `<td>${total[0]}</td>`
+        headers += `<th><span class="trello_id">${total[2]}</span><br>${total[0]}</th>`
         row += `<td>${total[1]}</td>`
     })
     row += "</tr>"

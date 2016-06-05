@@ -1,7 +1,7 @@
 defmodule Trello.Decode do
   def sum_story_points(board_data) do
     board_data |> Enum.reduce([], fn (queue, acc) ->
-      [{queue["name"], sum_card_story_points(queue["cards"])} | acc]
+      [{queue["name"], sum_card_story_points(queue["cards"]), queue["id"]} | acc]
     end)
     |> Enum.reverse
   end

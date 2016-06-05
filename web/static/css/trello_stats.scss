@@ -5,6 +5,10 @@
     td, th {
       padding: 1em;
       border: 1px solid #eee;
+      vertical-align: top;
+      .trello_id {
+          font-size: 65%;
+      }
     }
   }
 }

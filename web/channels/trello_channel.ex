@@ -9,7 +9,9 @@ defmodule ProjectStatus.TrelloChannel do
 
   def handle_info(:read_trellos, socket) do
     case Trello.sum_points_for_board(socket.assigns.trello_project_id) do
-      {:ok, totals} -> push socket, "trello_totals", %{totals: totals |> Enum.map(fn {name, total} -> [name, total] end)}
+      {:ok, totals} -> push socket, "trello_totals", %{totals: totals |> Enum.map(
+                                                        fn {name, total, identifier} -> [name, total, identifier]
+                                                        end)}
       {:error, err} -> push socket, "trello_totals_error", %{error: err |> inspect}
     end
     {:noreply, socket}
