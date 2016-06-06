@@ -13,6 +13,10 @@ defmodule Burnup.ProjectBurnup do
     pid |> GenServer.call(:raw_totals)
   end
 
+  def totals(pid) do
+    pid |> GenServer.call(:totals)
+  end
+
   ## Callbacks
   def init(project_id) do
     {:ok, %__MODULE__{project_id: project_id}}
@@ -24,5 +28,8 @@ defmodule Burnup.ProjectBurnup do
   end
 
   def handle_call(:totals, _from, state = %{project_id: project_id}) do
+    result = Queries.raw_totals(project_id)
+    |> Queries.categorise_totals(Queries.story_status_categories(project_id))
+    {:reply, result, state}
   end
 end

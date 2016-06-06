@@ -25,4 +25,31 @@ defmodule Burnup.Queries do
     |> Repo.all
     |> Enum.into(%{})
   end
+
+  def categorise_totals(totals, categories) do
+    %{
+      total: total(totals, categories),
+      delivered: delivered(totals, categories),
+      accepted: accepted(totals, categories)
+    }
+  end
+
+  defp accepted(totals, categories), do: totals_for(totals, categories, ["accepted"])
+
+  defp delivered(totals, categories), do: totals_for(totals, categories, ["done", "accepted"])
+
+  defp total(totals, categories), do: totals_for(totals, categories, ["done", "accepted", "todo"])
+
+  defp totals_for(totals, categories, matching_categories) do
+    totals
+    |> Enum.filter(fn {_date, status_identifier, _name, _total} ->
+      matching_categories |> Enum.member?(categories[status_identifier]) end)
+    |> Enum.group_by(fn {date, _status_identifier, _name, _total} -> date end)
+    |> Enum.map(fn {date, date_totals} -> {date, sum_totals(date_totals)} end)
+  end
+
+  defp sum_totals(totals) do
+    totals
+    |> Enum.reduce(0, fn {_date, _status_identifier, _name, total}, acc -> (total || 0) + acc end)
+  end
 end
