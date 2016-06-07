@@ -9,29 +9,9 @@ defmodule Burnup.HighchartsJsonTest do
     assert 1460377801000 == erl_to_epoch_milliseconds({{2016, 4, 11}, {12, 30, 1}})
   end
 
-  test "highcharts_structured, but quite weakly" do
-    categorised_totals = %{
-      totals: [],
-      delivered: [],
-      accepted: []
-    }
-    assert highcharts_structured(categorised_totals) == %{
-      exportFilename: "burnup.png",
-      exportTitle: "Burnup",
-      xAxisMin: 1463961600000,
-      xAxisMax: 1468627199000,
-      xAxisTitle: "Date",
-      yAxisTitle: "Points",
-      series: [%{name: "Total",  data: []},
-               %{name: "Total Delivered", data: []},
-               %{name: "Accepted", data: []}
-              ]
-    }
-  end
-
   test "dates converted to epoch times in milliseconds" do
     categorised_totals = %{
-      totals: [{{{1970, 1, 1}, {0, 0, 0}}, 30}],
+      total: [{{{1970, 1, 1}, {0, 0, 0}}, 30}],
       delivered: [{{{1970, 1, 1}, {0, 1, 0}}, 20}],
       accepted: [{{{1970, 1, 1}, {0, 2, 0}}, 10}]
     }

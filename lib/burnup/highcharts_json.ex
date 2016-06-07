@@ -11,7 +11,7 @@ defmodule Burnup.HighchartsJson do
   @x_min {{2016, 5, 23}, {0, 0, 0}}
   @x_max {{2016, 7, 15}, {23, 59, 59}}
 
-  def highcharts_structured(categorised_totals) do
+  def xhighcharts_structured(categorised_totals) do
     %{
       series: series(categorised_totals),
       xAxisMax: @x_max |> erl_to_epoch_milliseconds,
@@ -19,12 +19,48 @@ defmodule Burnup.HighchartsJson do
       xAxisTitle: @x_title,
       yAxisTitle: @y_title,
       exportFilename: @filename,
-      exportTitle: @title
+      exportTitle: @title,
+      type: "image/png"
     }
   end
 
-  def series(%{totals: totals, delivered: delivered, accepted: accepted}) do
-    [%{name: "Total",  data: totals_with_epoch_date(totals)},
+  def highcharts_structured(categorised_totals) do
+    %{
+      chart: %{ type: 'line' },
+      legend: %{
+        align: 'right',
+        borderWidth: 0,
+        layout: 'vertical',
+        verticalAlign: 'top'
+      },
+      title: %{ text: @title },
+      tooltip: %{
+        crosshairs: true,
+        shared: true
+      },
+      xAxis: %{
+        max: @x_max |> erl_to_epoch_milliseconds,
+        min: @x_min |> erl_to_epoch_milliseconds,
+        title: %{ text: 'Date' },
+        type: 'datetime'
+      },
+      yAxis: %{
+        title: %{ text: 'Points' }
+      },
+      series: categorised_totals |> series,
+      plotOptions: %{
+        line: %{
+          marker: %{
+            enabled: false
+                  }
+              }
+      },
+      exporting: %{ enabled: false }
+    }
+  end
+
+  def series(%{total: total, delivered: delivered, accepted: accepted}) do
+    [%{name: "Total",  data: totals_with_epoch_date(total)},
      %{name: "Total Delivered", data: totals_with_epoch_date(delivered)},
      %{name: "Accepted", data: totals_with_epoch_date(accepted)}
     ]
@@ -33,12 +69,6 @@ defmodule Burnup.HighchartsJson do
   def totals_with_epoch_date(totals) do
     totals
     |> Enum.map(fn {datetime, total} -> {erl_to_epoch_milliseconds(datetime), total} end)
-  end
-
-  def highcharts_json(categorised_totals) do
-    categorised_totals
-    |> highcharts_structured
-    |> Poison.encode!
   end
 
   def erl_to_epoch_milliseconds(datetime = {{_,_,_},{_,_,_}}) do
